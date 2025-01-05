@@ -7,16 +7,15 @@ public abstract class Entity {
         this.figure = figure;
     }
 
-
-    public abstract void spawn(Coordinates coordinates);
-
-    Coordinates getCoordinates() {
+    public Coordinates getCoordinates() {
         return coordinates;
     }
 
-    String getFigure() {
+    public String getFigure() {
         return figure;
     }
+
+    public abstract void spawn(Coordinates coordinates);
 
     public void replaceCoordinates(Coordinates coordinates) {
         this.coordinates = coordinates;

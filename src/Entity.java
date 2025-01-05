@@ -1,11 +1,9 @@
 public abstract class Entity {
-    protected int horizontalCoordinate;
-    protected int verticalCoordinate;
+    protected Coordinates coordinates;
     protected String figure;
 
-    public Entity(int horizontalCoordinate, int verticalCoordinate, String figure) {
-        this.horizontalCoordinate = horizontalCoordinate;
-        this.verticalCoordinate = verticalCoordinate;
+    public Entity(Coordinates coordinates, String figure) {
+        this.coordinates = coordinates;
         this.figure = figure;
     }
 }

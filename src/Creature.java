@@ -1,6 +1,6 @@
 public abstract class Creature extends Entity{
 
-    public Creature(int horizontalCoordinate, int verticalCoordinate, String figure) {
-        super(horizontalCoordinate, verticalCoordinate, figure);  //проверка что hp не больше 100
+    public Creature(Coordinates coordinates, String figure) {
+        super(coordinates, figure);  //проверка что hp не больше 100
     }
 }

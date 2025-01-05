@@ -33,8 +33,13 @@ public class Main {
         MyMap.printMap();
 
 
+        Coordinates herbivoreSpawnCoordonates = new Coordinates(0,10);
+        Entity herbivore = new Herbivore(herbivoreSpawnCoordonates, "\uD83D\uDC30");
 
+        MyMap.spawnEntity(herbivore);
 
+        System.out.println();
+        MyMap.printMap();
 
     }
 }

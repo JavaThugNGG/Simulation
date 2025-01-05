@@ -4,4 +4,8 @@ public class Herbivore extends Creature{
         super(coordinates, figure);  //проверка что hp не больше 100
     }
 
+    public String toString() {
+        return figure;
+    }
+
 }

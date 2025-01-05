@@ -10,8 +10,8 @@ public class Main {
         List<Coordinates> listCoordinates = new ArrayList<>();
         List<Entity> listEmptyPlaces = new ArrayList<>();
 
-        for (int horizontal = 1; horizontal < 11; horizontal++) {    //теперь в списке хранятся координаты с пустыми фигурами
-            for (int vertical = 1; vertical < 21; vertical++) {
+        for (int horizontal = 0; horizontal < 10; horizontal++) {    //теперь в списке хранятся координаты с пустыми фигурами
+            for (int vertical = 0; vertical < 20; vertical++) {
                 Coordinates coordinate = new Coordinates(horizontal, vertical);
                 Entity emptyPlace = new EmptyPlace(coordinate, "⬛");
                 listCoordinates.add(coordinate);
@@ -20,6 +20,19 @@ public class Main {
         }
 
         MyMap.initializeDefualtMap(listCoordinates, listEmptyPlaces);
+
+
+
+        Coordinates predatorSpawnCoordonates = new Coordinates(0,19);
+        Entity predator = new Predator(predatorSpawnCoordonates, "\uD83D\uDC2F");
+
+        MyMap.spawnEntity(predator);
+
+
+        System.out.println();
+        MyMap.printMap();
+
+
 
 
 

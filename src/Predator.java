@@ -4,4 +4,9 @@ public class Predator extends Creature{
     public Predator(Coordinates coordinates, String figure) {
         super(coordinates, figure);  //проверка что hp не больше 100
     }
+
+
+    public String toString() {
+        return figure;
+    }
 }

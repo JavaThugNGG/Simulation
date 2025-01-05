@@ -12,14 +12,22 @@ public class MyMap {
 
             map.put(coordinate, emptyPlace);  // Добавляем пару (координаты, объект) в map
         }
+        printMap();
+    }
+
+    public static void printMap() {
         for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
             System.out.print(entry.getValue());
 
-            if (entry.getKey().getVertical() == 20) {
+            if (entry.getKey().getVertical() == 19) {
                 System.out.print("\n");
             }
-
         }
+    }
+
+    public static void spawnEntity(Entity entity) {
+        Coordinates coordinates = entity.getCoordinates();
+        map.put(coordinates, entity);
     }
 
 }

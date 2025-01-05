@@ -6,4 +6,15 @@ public abstract class Entity {
         this.coordinates = coordinates;
         this.figure = figure;
     }
+
+
+    public abstract void spawn(Coordinates coordinates);
+
+    Coordinates getCoordinates() {
+        return coordinates;
+    }
+
+    String getFigure() {
+        return figure;
+    }
 }

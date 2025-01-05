@@ -7,4 +7,8 @@ public class EmptyPlace extends Entity{
     public String toString() {
         return figure;
     }
+
+    public void spawn(Coordinates coordinates) {
+
+    }
 }

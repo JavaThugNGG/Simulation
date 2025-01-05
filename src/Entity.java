@@ -17,4 +17,8 @@ public abstract class Entity {
     String getFigure() {
         return figure;
     }
+
+    public void replaceCoordinates(Coordinates coordinates) {
+        this.coordinates = coordinates;
+    }
 }

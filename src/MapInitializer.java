@@ -3,12 +3,13 @@ import java.util.Map;
 
 public class MapInitializer {
 
-    public void initializeMap(Map<Coordinates, Entity> map, List<Grass> grasses, List<Herbivore> herbivores) {
+    public void initializeMap(Map<Coordinates, Entity> map, List<Grass> grasses, List<Creature> creatures) {
         initializeEmptyCells(map);
         spawnGrass(map, grasses,4,10);
-        spawnGrass(map, grasses,4,19);
-        spawnHerbivore(map, herbivores,7, 3);
-        spawnHerbivore(map, herbivores,5, 4);
+        spawnHerbivore(map, creatures,7, 3);
+        spawnHerbivore(map, creatures,5, 4);
+        spawnPredator(map, creatures,0, 1);
+        spawnPredator(map, creatures,0, 8);
     }
 
 
@@ -29,10 +30,17 @@ public class MapInitializer {
         grasses.add(grass);
     }
 
-    private void spawnHerbivore(Map<Coordinates, Entity> map, List<Herbivore> herbivores, int row, int column) {
+    private void spawnHerbivore(Map<Coordinates, Entity> map, List<Creature> creatures, int row, int column) {
         Coordinates spawnCoordinates = new Coordinates(row, column);
         Herbivore herbivore = new Herbivore(spawnCoordinates, "\uD83D\uDC30");
         map.put(spawnCoordinates, herbivore);
-        herbivores.add(herbivore);
+        creatures.add(herbivore);
+    }
+
+    private void spawnPredator(Map<Coordinates, Entity> map, List<Creature> creatures, int row, int column) {
+        Coordinates spawnCoordinates = new Coordinates(row, column);
+        Predator predator = new Predator(spawnCoordinates, "\uD83D\uDC3A");
+        map.put(spawnCoordinates, predator);
+        creatures.add(predator);
     }
 }

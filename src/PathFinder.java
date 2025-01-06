@@ -1,30 +1,51 @@
 import java.util.*;
 
 public class PathFinder {
-    public List<Coordinates> findPathToGrass(Map<Coordinates, Entity> map, Herbivore herbivore) { //реализует алгоритм поиска в ширину
-        Coordinates start = herbivore.getCoordinates();
+    public List<Coordinates> findPathToVictim(Map<Coordinates, Entity> map, Creature creature) { //реализует алгоритм поиска в ширину
+        Coordinates start = creature.getCoordinates();
         Queue<Coordinates> queue = new LinkedList<>();
         Map<Coordinates, Coordinates> cameFrom = new HashMap<>(); // Для восстановления пути
         Set<Coordinates> visited = new HashSet<>();
         queue.add(start);
         visited.add(start);
 
-        while (!queue.isEmpty()) {   //пока есть клетки для обработки в очереди
-            Coordinates current = queue.poll();    //взяли клетку из очередь
 
-            if (map.get(current) instanceof Grass) {       // Если нашли траву, восстанавливаем путь
-                return reconstructPath(cameFrom, start, current);
-            }
-            for (Coordinates neighbor : getNeighbors(current)) {   //взяли клетку из очереди (проверяем соседей тут)
-                if (!visited.contains(neighbor) && map.containsKey(neighbor)) {
-                    queue.add(neighbor);
-                    visited.add(neighbor);
-                    cameFrom.put(neighbor, current);   //содержит из какой клетки мы пришли в текущую
+        if (creature instanceof Predator) {
+            while (!queue.isEmpty()) {   //пока есть клетки для обработки в очереди
+                Coordinates current = queue.poll();    //взяли клетку из очередь
+
+                if (map.get(current) instanceof Herbivore) {       // Если нашли травоядное, восстанавливаем путь
+                    return reconstructPath(cameFrom, start, current);
+                }
+                for (Coordinates neighbor : getNeighbors(current)) {   //взяли клетку из очереди (проверяем соседей тут)
+                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Grass)) {
+                        queue.add(neighbor);
+                        visited.add(neighbor);
+                        cameFrom.put(neighbor, current);   //содержит из какой клетки мы пришли в текущую
+                    }
                 }
             }
         }
+        if (creature instanceof Herbivore) {
+            while (!queue.isEmpty()) {   //пока есть клетки для обработки в очереди
+                Coordinates current = queue.poll();    //взяли клетку из очередь
+
+                if (map.get(current) instanceof Grass) {       // Если нашли траву, восстанавливаем путь
+                    return reconstructPath(cameFrom, start, current);
+                }
+                for (Coordinates neighbor : getNeighbors(current)) {   //взяли клетку из очереди (проверяем соседей тут)
+                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Predator)) {
+                        queue.add(neighbor);
+                        visited.add(neighbor);
+                        cameFrom.put(neighbor, current);   //содержит из какой клетки мы пришли в текущую
+                    }
+                }
+            }
+        }
+
         return Collections.emptyList(); // Если путь не найден
     }
+
 
     private List<Coordinates> getNeighbors(Coordinates coordinates) {
         List<Coordinates> neighbors = new ArrayList<>();

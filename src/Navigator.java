@@ -11,11 +11,13 @@ public class Navigator {
     }
 
 
-    public void findAndMove(Map<Coordinates, Entity> map, List<Herbivore> herbivores) {
-        for (Herbivore herbivore : herbivores) {
-            List<Coordinates> path = pathFinder.findPathToGrass(map, herbivore);
+    public void findPathAndMove(Map<Coordinates, Entity> map, List<Creature> creatures) {
+        for (Creature creature : creatures) {
+            List<Coordinates> path = pathFinder.findPathToVictim(map, creature);
             if (!path.isEmpty()) {
-                mover.moveHerbivore(map, path, herbivore);
+                System.out.println(creature.figure);
+                System.out.println(path);
+                mover.moveCreature(map, path, creature);
             }
         }
     }

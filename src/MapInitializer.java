@@ -2,7 +2,6 @@ import java.util.List;
 import java.util.Map;
 
 public class MapInitializer {
-    public MapInitializer() {};
 
     public void initializeMap(Map<Coordinates, Entity> map, List<Grass> grasses, List<Herbivore> herbivores) {
         initializeEmptyCells(map);

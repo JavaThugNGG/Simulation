@@ -1,16 +1,16 @@
 import java.util.Objects;
 
 public class Coordinates implements Comparable<Coordinates> {
-    private int line;
+    private int row;
     private int column;
 
     public Coordinates(int line, int column) {
-        this.line = line;
+        this.row = line;
         this.column = column;
     }
 
-    public int getLine() {
-        return line;
+    public int getRow() {
+        return row;
     }
 
     public int getColumn() {
@@ -18,7 +18,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     public String toString() {
-        return line + " " + column;
+        return row + " " + column;
     }
 
     @Override
@@ -26,19 +26,19 @@ public class Coordinates implements Comparable<Coordinates> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coordinates that = (Coordinates) o;
-        return line == that.line && column == that.column;
+        return row == that.row && column == that.column;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(line, column);
+        return Objects.hash(row, column);
     }
 
     @Override
     public int compareTo(Coordinates other) {
         // Сортировка по оси X
-        if (this.line != other.line) {
-            return Integer.compare(this.line, other.line);
+        if (this.row != other.row) {
+            return Integer.compare(this.row, other.row);
         }
         // Если оси X равны, сортировка по оси Y
         return Integer.compare(this.column, other.column);

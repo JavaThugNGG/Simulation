@@ -8,4 +8,8 @@ public class Grass extends Entity{
     public void spawn(Coordinates coordinates) {
 
     }
+
+    public String toString() {
+        return figure;
+    }
 }

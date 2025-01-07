@@ -3,9 +3,9 @@ import java.util.Map;
 
 public class Navigator {
     private PathFinder pathFinder;
-    private Mover mover;
+    private MoveController mover;
 
-    public Navigator(PathFinder pathFinder, Mover mover) {
+    public Navigator(PathFinder pathFinder, MoveController mover) {
         this.pathFinder = pathFinder;
         this.mover = mover;
     }
@@ -17,7 +17,8 @@ public class Navigator {
             if (!path.isEmpty()) {
                 System.out.println(creature.figure);
                 System.out.println(path);
-                mover.moveCreature(map, path, creature);
+                mover.moveCreature(path, creature);
+
             }
         }
     }

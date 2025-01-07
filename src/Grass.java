@@ -1,15 +1,8 @@
-public class Grass extends Entity{
-
+public class Grass extends Plant {
 
     public Grass(Coordinates coordinates, String figure) {
         super(coordinates, figure);
+        isEdible = true;
     }
 
-    public void spawn(Coordinates coordinates) {
-
-    }
-
-    public String toString() {
-        return figure;
-    }
 }

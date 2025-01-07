@@ -1,8 +1,7 @@
-import java.net.http.WebSocket;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Creature extends Entity{
+public abstract class Creature extends Entity {
     private List<MoveListener> listeners = new ArrayList<>();
 
     public Creature(Coordinates coordinates, String figure, List<MoveListener> listeners) {

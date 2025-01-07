@@ -5,45 +5,34 @@ public class Simulation {
     private Map<Coordinates, Entity> map = new TreeMap<>();
     private List<Grass> grasses = new ArrayList<>();
     private List<Creature> creatures = new ArrayList<>();;
+    private final List<MoveListener> listeners = new ArrayList<>();    //список слушателей
     private boolean isWin = false;
 
-    private final List<MoveListener> listeners = new ArrayList<>();
-
-    MapController mapController = new MapController(map);
-    MoveController moveController = new MoveController();
-
-    public void startSimulation() {
+    public void initializeSimulation() {
         MapController mapController = new MapController(map);
-        MapInitializer mapInitializer = new MapInitializer();
         Renderer renderer = new Renderer();
-        mapInitializer.initializeMap(map, grasses, creatures, listeners);
+        mapController.initializeMap(map, grasses, creatures, listeners);
         PathFinder pathFinder = new PathFinder();
         MoveController mover = new MoveController();
-        Navigator coordinator = new Navigator(pathFinder, mover);
+        Navigator navigator = new Navigator(pathFinder, mover);
         listeners.add(mapController);
 
+        runSimulation(renderer, navigator);
+    }
+
+    private void runSimulation(Renderer renderer, Navigator navigator) {
         do {
-            isWin = true; // Предполагаем, что победа, пока не докажем обратное
+            isWin = true;
 
             for (Entity entity : map.values()) {
                 if (entity instanceof Herbivore) {
-                    isWin = false; // Если нашли травоядное, победа отменяется
-                    break; // Достаточно найти одно травоядное, чтобы выйти из проверки
+                    isWin = false;
+                    break;
                 }
             }
 
             renderer.printMap(map);
-            coordinator.findPathAndMove(map, creatures);
-        } while (!isWin); // Продолжаем, пока не наступила победа
+            navigator.findPathAndMove(map, creatures);    //обновляем пути у всех существ
+        } while (!isWin);
     }
-
-
-    public void addMoveListener(MoveListener listener) {
-        listeners.add(listener);
-    }
-
-    public void removeMoveListener(MoveListener listener) {
-        listeners.remove(listener);
-    }
-
 }

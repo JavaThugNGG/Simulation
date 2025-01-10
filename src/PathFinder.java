@@ -18,7 +18,7 @@ public class PathFinder {
                     return reconstructPath(cameFrom, start, current);
                 }
                 for (Coordinates neighbor : getNeighbors(current)) {   //взяли клетку из очереди (проверяем соседей тут)
-                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Grass)) {
+                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Grass) &&!(map.get(neighbor) instanceof Tree) &&!(map.get(neighbor) instanceof Predator)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
                         cameFrom.put(neighbor, current);   //содержит из какой клетки мы пришли в текущую
@@ -34,7 +34,7 @@ public class PathFinder {
                     return reconstructPath(cameFrom, start, current);
                 }
                 for (Coordinates neighbor : getNeighbors(current)) {   //взяли клетку из очереди (проверяем соседей тут)
-                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Predator)) {
+                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Predator) &&!(map.get(neighbor) instanceof Tree) &&!(map.get(neighbor) instanceof Herbivore)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
                         cameFrom.put(neighbor, current);   //содержит из какой клетки мы пришли в текущую

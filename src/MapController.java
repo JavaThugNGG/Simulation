@@ -8,27 +8,20 @@ public class MapController implements MoveListener {
         this.map = map;
     }
 
-
     @Override
     public void onMove(Creature creature, Coordinates oldCoordinates, Coordinates newCoordinates) {
-        // Обновляем карту
         map.put(newCoordinates, creature);
         map.put(oldCoordinates, new EmptyPlace(oldCoordinates, "⬛"));
     }
 
-    public boolean isPositionEmpty(Coordinates coordinates) {
-        return map.get(coordinates) instanceof EmptyPlace;
-    }
-
-
-    public void initializeMap(Map<Coordinates, Entity> map, List<Grass> grasses, List<Creature> creatures, List<MoveListener> listeners) {
+    public void initializeMap(Map<Coordinates, Entity> map, List<Plant> plants, List<Creature> creatures, List<MoveListener> listeners) {
         initializeEmptyCells(map);
-        spawnGrass(map, grasses,4,10);
+        spawnGrass(map, plants,6,5);
+        spawnTree(map, plants, 5, 9);
         spawnHerbivore(map, creatures,7, 3,  listeners);
         spawnHerbivore(map, creatures,5, 4,  listeners);
         spawnPredator(map, creatures,0, 1,  listeners);
         spawnPredator(map, creatures,0, 8,  listeners);
-
     }
 
     private void initializeEmptyCells(Map<Coordinates, Entity> map) {
@@ -41,11 +34,18 @@ public class MapController implements MoveListener {
         }
     }
 
-    private void spawnGrass(Map<Coordinates, Entity> map, List<Grass> grasses, int row, int column) {
+    private void spawnGrass(Map<Coordinates, Entity> map, List<Plant> plants, int row, int column) {
         Coordinates spawnCoordinates = new Coordinates(row,column);
         Grass grass = new Grass(spawnCoordinates, "\uD83C\uDF3F");
         map.put(spawnCoordinates, grass);
-        grasses.add(grass);
+        plants.add(grass);
+    }
+
+    private void spawnTree(Map<Coordinates, Entity> map, List<Plant> plants, int row, int column) {
+        Coordinates spawnCoordinates = new Coordinates(row,column);
+        Tree wood = new Tree(spawnCoordinates, "\uD83C\uDF33");
+        map.put(spawnCoordinates, wood);
+        plants.add(wood);
     }
 
 

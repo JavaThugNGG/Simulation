@@ -10,17 +10,12 @@ public class Navigator {
         this.mover = mover;
     }
 
-
     public void findPathAndMove(Map<Coordinates, Entity> map, List<Creature> creatures) {
         for (Creature creature : creatures) {
             List<Coordinates> path = pathFinder.findPathToVictim(map, creature);
             if (!path.isEmpty()) {
-                System.out.println(creature.figure);
-                System.out.println(path);
                 mover.moveCreature(path, creature);
-
             }
         }
     }
-
 }

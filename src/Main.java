@@ -3,6 +3,6 @@ public class Main {
         System.out.println("Добро пожаловать в игру Симуляция!\n");
         Simulation simulation = new Simulation();
         simulation.initializeSimulation();
-        System.out.println("Вы победили!");
+        System.out.println("Симуляция окончена!");
     }
 }

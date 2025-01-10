@@ -2,10 +2,11 @@ import java.util.*;
 
 
 public class Simulation {
-    private Map<Coordinates, Entity> map = new TreeMap<>();
+    private Map<Coordinates, Entity> map = new HashMap<>();
     private List<MoveListener> listeners = new ArrayList<>();    //список слушателей
     private List<Creature> creatures = new ArrayList<>();
     private List<Plant> plantes = new ArrayList<>();
+    private final Comparator<Coordinates> comparator = new CoordinatesComparator();
     private boolean isEnd;
 
 
@@ -31,7 +32,7 @@ public class Simulation {
                 }
             }
 
-            renderer.printMap(map);
+            renderer.printMap(map, comparator);
             navigator.findPathAndMove(map, creatures);    //обновляем пути у всех существ
         } while (!isEnd);
     }

@@ -1,4 +1,5 @@
 import java.util.Objects;
+import java.util.Comparator;
 
 public class Coordinates implements Comparable<Coordinates> {
     private int row;
@@ -44,3 +45,5 @@ public class Coordinates implements Comparable<Coordinates> {
         return Integer.compare(this.column, other.column);
     }
 }
+
+

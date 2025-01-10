@@ -3,6 +3,11 @@ import java.util.Map;
 
 public class MapController implements MoveListener {
     private final Map<Coordinates, Entity> map;
+    private final String GRASSFIGURE = "\uD83C\uDF3F";
+    private final String TREEFIGURE = "\uD83C\uDF33";
+    private final String HERBIVOREFIGURE = "\uD83D\uDC30";
+    private final String PREDATIRFIGURE = "\uD83D\uDC3A";
+
 
     public MapController(Map<Coordinates, Entity> map) {
         this.map = map;
@@ -36,14 +41,14 @@ public class MapController implements MoveListener {
 
     private void spawnGrass(Map<Coordinates, Entity> map, List<Plant> plants, int row, int column) {
         Coordinates spawnCoordinates = new Coordinates(row,column);
-        Grass grass = new Grass(spawnCoordinates, "\uD83C\uDF3F");
+        Grass grass = new Grass(spawnCoordinates, GRASSFIGURE);
         map.put(spawnCoordinates, grass);
         plants.add(grass);
     }
 
     private void spawnTree(Map<Coordinates, Entity> map, List<Plant> plants, int row, int column) {
         Coordinates spawnCoordinates = new Coordinates(row,column);
-        Tree wood = new Tree(spawnCoordinates, "\uD83C\uDF33");
+        Tree wood = new Tree(spawnCoordinates, TREEFIGURE);
         map.put(spawnCoordinates, wood);
         plants.add(wood);
     }
@@ -51,14 +56,14 @@ public class MapController implements MoveListener {
 
     private void spawnHerbivore(Map<Coordinates, Entity> map, List<Creature> creatures, int row, int column, List<MoveListener> listeners) {
         Coordinates spawnCoordinates = new Coordinates(row, column);
-        Herbivore herbivore = new Herbivore(spawnCoordinates, "\uD83D\uDC30",  listeners);
+        Herbivore herbivore = new Herbivore(spawnCoordinates, HERBIVOREFIGURE,  listeners);
         map.put(spawnCoordinates, herbivore);
         creatures.add(herbivore);
     }
 
     private void spawnPredator(Map<Coordinates, Entity> map, List<Creature> creatures, int row, int column, List<MoveListener> listeners) {
         Coordinates spawnCoordinates = new Coordinates(row, column);
-        Predator predator = new Predator(spawnCoordinates, "\uD83D\uDC3A", listeners);
+        Predator predator = new Predator(spawnCoordinates, PREDATIRFIGURE, listeners);
         map.put(spawnCoordinates, predator);
         creatures.add(predator);
     }

@@ -6,7 +6,6 @@ public class Simulation {
     private List<MoveListener> listeners = new ArrayList<>();    //список слушателей
     private List<Creature> creatures = new ArrayList<>();
     private List<Plant> plantes = new ArrayList<>();
-    private final Comparator<Coordinates> comparator = new CoordinatesComparator();
     private boolean isEnd;
 
 
@@ -32,7 +31,7 @@ public class Simulation {
                 }
             }
 
-            renderer.printMap(map, comparator);
+            renderer.printMap(map);
             navigator.findPathAndMove(map, creatures);    //обновляем пути у всех существ
         } while (!isEnd);
     }

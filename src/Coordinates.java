@@ -1,5 +1,5 @@
 import java.util.Objects;
-import java.util.Comparator;
+
 
 public class Coordinates implements Comparable<Coordinates> {
     private int row;

@@ -4,9 +4,8 @@ import java.util.TreeMap;
 
 public class Renderer {
 
-    public void printMap(Map<Coordinates, Entity> inputMap, Comparator<Coordinates> comparator) {
-        Map<Coordinates, Entity> sortedMap = new TreeMap<>(comparator);
-        sortedMap.putAll(inputMap);
+    public void printMap(Map<Coordinates, Entity> inputMap) {
+        Map<Coordinates, Entity> sortedMap = new TreeMap<>(inputMap);
 
         for (Map.Entry<Coordinates, Entity> entry : sortedMap.entrySet()) {
             System.out.print(entry.getValue());

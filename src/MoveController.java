@@ -2,15 +2,15 @@ import java.util.List;
 
 public class MoveController {
     public void moveCreature(List<Coordinates> path, Creature creature) {
-        if (path.isEmpty()) {
+        if (path.isEmpty()) {     //если пути нет, то двигаться не надо
             return;
         }
 
-        int steps = determineSteps(creature);
+        int steps = determineSteps(creature);        //травоядное делает 1 шаг, хищник 2
 
         for (int i = 0; i < steps; i++) {
             if (path.isEmpty()) {
-                break; // Прекращаем цикл, если путь пуст
+                break; // прекращаем цикл, если путь пуст
             }
             Coordinates newCoordinates = path.removeFirst();
             creature.makeMove(newCoordinates);

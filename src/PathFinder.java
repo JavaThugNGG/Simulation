@@ -2,10 +2,21 @@ import java.util.*;
 
 public class PathFinder {
 
-    public List<Coordinates> findPathToVictim(Map<Coordinates, Entity> map, Creature creature) {
+    public List<Coordinates> findPathToVictim(Map<Coordinates, Entity> map) {
+
+        List<Creature> creatures = new ArrayList<>();
+
+        for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
+            if (entry.getValue() instanceof Creature) {
+                Creature creature = (Creature) entry.getValue(); // Приведение типа, если это необходимо
+                creatures.add(creature); // Добавляем правильный объект в список
+            }
+        }
+
+
         Coordinates start = creature.getCoordinates();
         Queue<Coordinates> queue = new LinkedList<>();
-        Map<Coordinates, Coordinates> cameFrom = new HashMap<>(); // Для восстановления пути
+        Map<Coordinates, Coordinates> cameFrom = new HashMap<>(); // для восстановления пути
         Set<Coordinates> visited = new HashSet<>();
 
         queue.add(start);
@@ -15,37 +26,37 @@ public class PathFinder {
             while (!queue.isEmpty()) {
                 Coordinates current = queue.poll();
 
-                if (map.get(current) instanceof Herbivore) {
+                if (map.get(current) instanceof Herbivore) {     //если нашли травоядного -> восстанавливаем путь
                     return reconstructPath(cameFrom, start, current);
                 }
-                for (Coordinates neighbor : getNeighbors(current)) {   //взяли клетку из очереди (проверяем соседей тут)
+                for (Coordinates neighbor : getNeighbors(current)) {
                     if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Plant) &&!(map.get(neighbor) instanceof Predator)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
-                        cameFrom.put(neighbor, current);   //содержит из какой клетки мы пришли в текущую
+                        cameFrom.put(neighbor, current);
                     }
                 }
             }
         }
 
         if (creature instanceof Herbivore) {
-            while (!queue.isEmpty()) {   //пока есть клетки для обработки в очереди
-                Coordinates current = queue.poll();    //взяли клетку из очередь
+            while (!queue.isEmpty()) {
+                Coordinates current = queue.poll();
 
-                if (map.get(current) instanceof Grass) {       // Если нашли траву, восстанавливаем путь
+                if (map.get(current) instanceof Grass) {       //если нашли траву -> восстанавливаем путь
                     return reconstructPath(cameFrom, start, current);
                 }
-                for (Coordinates neighbor : getNeighbors(current)) {   //взяли клетку из очереди (проверяем соседей тут)
+                for (Coordinates neighbor : getNeighbors(current)) {
                     if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Herbivore) && !(map.get(neighbor) instanceof Tree)){
                         queue.add(neighbor);
                         visited.add(neighbor);
-                        cameFrom.put(neighbor, current);   //содержит из какой клетки мы пришли в текущую
+                        cameFrom.put(neighbor, current);
                     }
                 }
             }
         }
 
-        return Collections.emptyList(); // Если путь не найден
+        return Collections.emptyList(); // если путь не найден
     }
 
 
@@ -54,15 +65,15 @@ public class PathFinder {
         int line = coordinates.getRow();
         int column = coordinates.getColumn();
 
-        if (line > 0) neighbors.add(new Coordinates(line - 1, column)); // Вверх
-        if (line < 9) neighbors.add(new Coordinates(line + 1, column)); // Вниз
-        if (column > 0) neighbors.add(new Coordinates(line, column - 1)); // Влево
-        if (column < 19) neighbors.add(new Coordinates(line, column + 1)); // Вправо
+        if (line > 0) neighbors.add(new Coordinates(line - 1, column));        // вверх
+        if (line < 9) neighbors.add(new Coordinates(line + 1, column));        // вниз
+        if (column > 0) neighbors.add(new Coordinates(line, column - 1));   // влево
+        if (column < 19) neighbors.add(new Coordinates(line, column + 1));  // вправо
 
         return neighbors;
     }
 
-    private List<Coordinates> reconstructPath(Map<Coordinates, Coordinates> cameFrom, Coordinates start, Coordinates goal) {
+    private List<Coordinates> reconstructPath(Map<Coordinates, Coordinates> cameFrom, Coordinates start, Coordinates goal) {  //восстановить путь
         List<Coordinates> path = new ArrayList<>();
         Coordinates current = goal;
 

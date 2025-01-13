@@ -3,18 +3,18 @@ import java.util.Map;
 
 public class Navigator {
     private PathFinder pathFinder;
-    private MoveController mover;
+    private MoveController moveController;
 
-    public Navigator(PathFinder pathFinder, MoveController mover) {
+    public Navigator(PathFinder pathFinder, MoveController moveController) {
         this.pathFinder = pathFinder;
-        this.mover = mover;
+        this.moveController = moveController;
     }
 
-    public void findPathAndMove(Map<Coordinates, Entity> map, List<Creature> creatures) {
-        for (Creature creature : creatures) {
-            List<Coordinates> path = pathFinder.findPathToVictim(map, creature);
+    public void findPathAndMove(Map<Coordinates, Entity> map) {
+        for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
+            List<Coordinates> path = pathFinder.findPathToVictim(map);
             if (!path.isEmpty()) {
-                mover.moveCreature(path, creature);
+                moveController.moveCreature(path, creature);
             }
         }
     }

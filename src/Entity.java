@@ -10,4 +10,8 @@ public abstract class Entity {
     public Coordinates getCoordinates() {
         return coordinates;
     }
+
+    public String toString() {
+        return figure;
+    }
 }

@@ -5,8 +5,4 @@ public class Herbivore extends Creature {
     public Herbivore(Coordinates coordinates, String figure, List<MoveListener> listeners) {
         super(coordinates, figure, listeners);
     }
-
-    public String toString() {
-        return figure;
-    }
 }

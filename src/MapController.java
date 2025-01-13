@@ -1,43 +1,48 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class MapController implements MoveListener {
-    private final Map<Coordinates, Entity> map;
+    private Map<Coordinates, Entity> map;
+    private int width;
+    private int height;
+
+
     private final String GRASSFIGURE = "\uD83C\uDF3F";
     private final String TREEFIGURE = "\uD83C\uDF33";
     private final String HERBIVOREFIGURE = "\uD83D\uDC30";
     private final String PREDATIRFIGURE = "\uD83D\uDC3A";
 
-
-    public MapController(Map<Coordinates, Entity> map) {
+    public MapController(Map<Coordinates, Entity> map, int width, int height, List<MoveListener> listeners) {
         this.map = map;
+        this.width = width;
+        this.height = height;
+
+        List<Entity> generatedEntities = generateEntities(listeners);
+
+        for (Entity entity : generatedEntities) {
+            Coordinates entityCoordinates = entity.getCoordinates();
+            map.put(entityCoordinates, entity);                       //и мапа заполнена существами
+        }
     }
+
+
 
     @Override
     public void onMove(Creature creature, Coordinates oldCoordinates, Coordinates newCoordinates) {
         map.put(newCoordinates, creature);
-        map.put(oldCoordinates, new EmptyPlace(oldCoordinates, "⬛"));
+        map.remove(newCoordinates);
     }
 
-    public void initializeMap(Map<Coordinates, Entity> map, List<Plant> plants, List<Creature> creatures, List<MoveListener> listeners) {
-        initializeEmptyCells(map);
+    /*public void initializeMap(List<Plant> plants, List<Creature> creatures, List<MoveListener> listeners) {
         spawnGrass(map, plants,6,5);
         spawnTree(map, plants, 5, 9);
         spawnHerbivore(map, creatures,7, 3,  listeners);
         spawnHerbivore(map, creatures,5, 4,  listeners);
         spawnPredator(map, creatures,0, 1,  listeners);
         spawnPredator(map, creatures,0, 8,  listeners);
-    }
+    }*/
 
-    private void initializeEmptyCells(Map<Coordinates, Entity> map) {
-        for (int row = 0; row < 10; row++) {
-            for (int column = 0; column < 20; column++) {
-                Coordinates coordinate = new Coordinates(row, column);  //создали координату
-                Entity emptyPlace = new EmptyPlace(coordinate, "⬛");      //создали пустую клетку
-                map.put(coordinate, emptyPlace);  //добавили пустую клетку по координате(ключу) в мапу
-            }
-        }
-    }
 
     private void spawnGrass(Map<Coordinates, Entity> map, List<Plant> plants, int row, int column) {
         Coordinates spawnCoordinates = new Coordinates(row,column);
@@ -66,5 +71,35 @@ public class MapController implements MoveListener {
         Predator predator = new Predator(spawnCoordinates, PREDATIRFIGURE, listeners);
         map.put(spawnCoordinates, predator);
         creatures.add(predator);
+    }
+
+    private List<Entity> generateEntities(List<MoveListener> listeners) {
+        List<Entity> generatedEntities = new ArrayList<>();
+        Coordinates grassCoordinates = new Coordinates(6,5);
+        Grass grass1 = new Grass(grassCoordinates,GRASSFIGURE);
+        generatedEntities.add(grass1);
+
+        Coordinates treeCoordinates = new Coordinates(5,9);
+        Tree tree1 = new Tree(treeCoordinates,TREEFIGURE);
+        generatedEntities.add(tree1);
+
+        Coordinates herbivoreCoordinates1 = new Coordinates(7,3);
+        Herbivore herbivore1 = new Herbivore(herbivoreCoordinates1,HERBIVOREFIGURE, listeners);
+        generatedEntities.add(herbivore1);
+
+        Coordinates herbivoreCoordinates2 = new Coordinates(5,4);
+        Herbivore herbivore2 = new Herbivore(herbivoreCoordinates2,HERBIVOREFIGURE, listeners);
+        generatedEntities.add(herbivore2);
+
+        Coordinates predatorCoordinates1 = new Coordinates(0,1);
+        Predator predator1 = new Predator(predatorCoordinates1,PREDATIRFIGURE, listeners);
+        generatedEntities.add(predator1);
+
+        Coordinates predatorCoordinates2 = new Coordinates(0,8);
+        Predator predator2 = new Predator(predatorCoordinates2,PREDATIRFIGURE, listeners);
+        generatedEntities.add(predator2);
+
+
+        return generatedEntities;
     }
 }

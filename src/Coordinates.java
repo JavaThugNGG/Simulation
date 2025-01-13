@@ -23,7 +23,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(Object o) {    //т к у нас в мапе ключ - объект
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coordinates that = (Coordinates) o;
@@ -37,11 +37,9 @@ public class Coordinates implements Comparable<Coordinates> {
 
     @Override
     public int compareTo(Coordinates other) {
-        // Сортировка по оси X
         if (this.row != other.row) {
             return Integer.compare(this.row, other.row);
         }
-        // Если оси X равны, сортировка по оси Y
         return Integer.compare(this.column, other.column);
     }
 }

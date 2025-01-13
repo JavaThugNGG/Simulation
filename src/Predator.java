@@ -5,8 +5,4 @@ public class Predator extends Creature {
     public Predator(Coordinates coordinates, String figure, List<MoveListener> listeners) {
         super(coordinates, figure, listeners);
     }
-
-    public String toString() {
-        return figure;
-    }
 }

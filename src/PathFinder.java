@@ -2,17 +2,7 @@ import java.util.*;
 
 public class PathFinder {
 
-    public List<Coordinates> findPathToVictim(Map<Coordinates, Entity> map) {
-
-        List<Creature> creatures = new ArrayList<>();
-
-        for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
-            if (entry.getValue() instanceof Creature) {
-                Creature creature = (Creature) entry.getValue(); // Приведение типа, если это необходимо
-                creatures.add(creature); // Добавляем правильный объект в список
-            }
-        }
-
+    public List<Coordinates> findPathToVictim(Map<Coordinates, Entity> map, Creature creature) {
 
         Coordinates start = creature.getCoordinates();
         Queue<Coordinates> queue = new LinkedList<>();
@@ -30,7 +20,7 @@ public class PathFinder {
                     return reconstructPath(cameFrom, start, current);
                 }
                 for (Coordinates neighbor : getNeighbors(current)) {
-                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Plant) &&!(map.get(neighbor) instanceof Predator)) {
+                    if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Plant) &&!(map.get(neighbor) instanceof Predator)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
                         cameFrom.put(neighbor, current);
@@ -47,7 +37,7 @@ public class PathFinder {
                     return reconstructPath(cameFrom, start, current);
                 }
                 for (Coordinates neighbor : getNeighbors(current)) {
-                    if (!visited.contains(neighbor) && map.containsKey(neighbor) && !(map.get(neighbor) instanceof Herbivore) && !(map.get(neighbor) instanceof Tree)){
+                    if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Herbivore) && !(map.get(neighbor) instanceof Tree)){
                         queue.add(neighbor);
                         visited.add(neighbor);
                         cameFrom.put(neighbor, current);

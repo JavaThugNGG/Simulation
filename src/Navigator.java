@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -11,10 +12,19 @@ public class Navigator {
     }
 
     public void findPathAndMove(Map<Coordinates, Entity> map) {
+        List<Creature> creatures = new ArrayList<>();
         for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
-            List<Coordinates> path = pathFinder.findPathToVictim(map);
+            if (entry.getValue() instanceof Creature) {
+                Creature creature = (Creature) entry.getValue();
+                creatures.add(creature);
+            }
+        }
+
+        for (Creature creature : creatures) {
+            List<Coordinates> path = pathFinder.findPathToVictim(map, creature);
             if (!path.isEmpty()) {
                 moveController.moveCreature(path, creature);
+                System.out.println(creature + " " + path);
             }
         }
     }

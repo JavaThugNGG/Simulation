@@ -31,7 +31,7 @@ public class MapController implements MoveListener {
     @Override
     public void onMove(Creature creature, Coordinates oldCoordinates, Coordinates newCoordinates) {
         map.put(newCoordinates, creature);
-        map.remove(newCoordinates);
+        map.remove(oldCoordinates);
     }
 
     /*public void initializeMap(List<Plant> plants, List<Creature> creatures, List<MoveListener> listeners) {

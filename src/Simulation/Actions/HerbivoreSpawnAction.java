@@ -1,3 +1,11 @@
+package Simulation.Actions;
+
+import Simulation.Coordinates;
+import Simulation.Entities.Entity;
+import Simulation.Entities.Herbivore;
+import Simulation.MoveListener;
+
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;

@@ -1,8 +1,14 @@
+package Simulation.Actions;
+
+import Simulation.Entities.Entity;
+import Simulation.Entities.Tree;
+import Simulation.Coordinates;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class TreeSpawnAction extends PlantSpawnAction{
+public class TreeSpawnAction extends PlantSpawnAction {
 
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities) {
         Random random = new Random();

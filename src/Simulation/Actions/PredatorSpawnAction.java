@@ -1,8 +1,15 @@
+package Simulation.Actions;
+
+import Simulation.Entities.Entity;
+import Simulation.Coordinates;
+import Simulation.MoveListener;
+import Simulation.Predator;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class PredatorSpawnAction extends CreatureSpawnAction{
+public class PredatorSpawnAction extends CreatureSpawnAction {
 
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners) {
         Random random = new Random();

@@ -1,9 +1,14 @@
+package Simulation.Entities;
+
+import Simulation.MoveListener;
+import Simulation.Coordinates;
+
 import java.util.List;
 
 public abstract class Creature extends Entity {
     private List<MoveListener> listeners;
 
-    public Creature(Coordinates coordinates, String figure,  List<MoveListener> listeners) {
+    public Creature(Coordinates coordinates, String figure, List<MoveListener> listeners) {
         super(coordinates, figure);
         this.listeners = listeners;
     }

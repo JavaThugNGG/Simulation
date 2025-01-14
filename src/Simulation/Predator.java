@@ -1,3 +1,7 @@
+package Simulation;
+
+import Simulation.Entities.Creature;
+
 import java.util.List;
 
 public class Predator extends Creature {

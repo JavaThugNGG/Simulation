@@ -1,3 +1,7 @@
+package Simulation;
+
+import Simulation.Entities.*;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;

@@ -1,3 +1,7 @@
+package Simulation;
+
+import Simulation.Entities.Entity;
+
 import java.util.Map;
 
 public class WorldPrinter {
@@ -7,7 +11,7 @@ public class WorldPrinter {
     public void print(Map<Coordinates, Entity> inputMap) {
         for (int i = 0; i < WORLD_ROWS; i++) {
             for (int j = 0; j < WORLD_COLUMNS; j++) {
-                Coordinates coordinate = new Coordinates(i, j);   // потому что мапа кушает класс Coordinates
+                Coordinates coordinate = new Coordinates(i, j);   // потому что мапа кушает класс Simulation.Simulation.Coordinates
 
                 if (inputMap.containsKey(coordinate)) {           // проверяем наличие координаты в карте
                     Entity entity = inputMap.get(coordinate);

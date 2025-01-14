@@ -1,3 +1,7 @@
+package Simulation.Entities;
+
+import Simulation.Coordinates;
+
 public abstract class Entity {
     protected Coordinates coordinates;
     protected String figure;

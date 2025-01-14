@@ -1,5 +1,12 @@
-import java.util.*;
+package Simulation;
 
+import Simulation.Actions.*;
+import Simulation.Entities.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Simulation {
     private static final int WORLD_ROWS = 10;
@@ -9,7 +16,7 @@ public class Simulation {
     private PathFinder pathFinder = new PathFinder();
     private List<Entity> generatedEntities= new ArrayList<>();
     private WorldPrinter worldPrinter = new WorldPrinter();
-    private List<MoveListener> listeners = new ArrayList<>();    //список слушателей (паттерн observer)
+    private List<MoveListener> listeners = new ArrayList<>();    //список классов, которые следят за изменением координат существ (чтобы обновить мапу)
 
     private List<CreatureSpawnAction> creatureInitActions = new ArrayList<>();
     private List<PlantSpawnAction> plantInitActions = new ArrayList<>();;
@@ -18,6 +25,7 @@ public class Simulation {
 
     public void runSimulation() {
         boolean isEnd;
+
         initializeSimulation();
         worldPrinter.print(map);
         do {
@@ -32,24 +40,21 @@ public class Simulation {
     private void initializeSimulation() {
         creatureInitActions.add(new HerbivoreSpawnAction());
         creatureInitActions.add(new PredatorSpawnAction());
-
         plantInitActions.add(new GrassSpawnAction());
         plantInitActions.add(new TreeSpawnAction());
-
         turnActions.add(new MoveCreaturesAction());
 
-        for (PlantSpawnAction action : plantInitActions) {
+        for (PlantSpawnAction action : plantInitActions) {               //спавним растения
             action.perform(map, generatedEntities);
         }
 
-        for (CreatureSpawnAction action : creatureInitActions) {
+        for (CreatureSpawnAction action : creatureInitActions) {         //спавним хищников
             action.perform(map, generatedEntities, listeners);
         }
 
         MapController mapController = new MapController(map, generatedEntities);
-        listeners.add(mapController);
+        listeners.add(mapController);                                                     //класс mapController слушает перемещения класса Simulation.Simulation.Entities.Entity и обновляет мапу
     }
-
 
     private void moveCreations() {
         for (MoveCreaturesAction action : turnActions) {
@@ -57,16 +62,15 @@ public class Simulation {
         }
     }
 
-
     private boolean isHerbivoresAlive() {
-        boolean isEnd = true;
+        boolean isAlive = true;
         for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
             if (entry.getValue() instanceof Herbivore) {
-                isEnd = false;
+                isAlive = false;
                 break;
             }
         }
-        return isEnd;
+        return isAlive;
     }
 
     public static int getWORLD_ROWS() {

@@ -4,17 +4,14 @@ import java.util.Map;
 
 public class MapController implements MoveListener {
     private Map<Coordinates, Entity> map;
-    private int width;
-    private int height;
+    private final int WORLD_ROWS = Simulation.getWORLD_ROWS();
+    private final int WORLD_COLUMNS = Simulation.getWORLD_COLUMNS();
 
 
 
 
-    public MapController(Map<Coordinates, Entity> map, int width, int height, List<Entity> generatedEntities, List<MoveListener> listeners) {
+    public MapController(Map<Coordinates, Entity> map, List<Entity> generatedEntities) {
         this.map = map;
-        this.width = width;
-        this.height = height;
-
 
         for (Entity entity : generatedEntities) {     //заполнение мапы
             Coordinates entityCoordinates = entity.getCoordinates();

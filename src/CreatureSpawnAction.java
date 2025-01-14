@@ -3,6 +3,8 @@ import java.util.Map;
 import java.util.Random;
 
 public abstract class CreatureSpawnAction{
+    protected final int WORLD_ROWS = Simulation.getWORLD_ROWS();
+    protected final int WORLD_COLUMNS = Simulation.getWORLD_COLUMNS();
 
-    public abstract void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, int worldRows, int worldColumns, List<MoveListener> listeners);
+    public abstract void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners);
 }

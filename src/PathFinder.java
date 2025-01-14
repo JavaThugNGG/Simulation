@@ -1,12 +1,14 @@
 import java.util.*;
 
 public class PathFinder {
+    final int WORLD_ROWS = Simulation.getWORLD_ROWS();
+    final int WORLD_COLUMNS = Simulation.getWORLD_COLUMNS();
 
     public List<Coordinates> findPathToVictim(Map<Coordinates, Entity> map, Creature creature) {
 
         Coordinates start = creature.getCoordinates();
         Queue<Coordinates> queue = new LinkedList<>();
-        Map<Coordinates, Coordinates> cameFrom = new HashMap<>(); // для восстановления пути
+        Map<Coordinates, Coordinates> cameFrom = new HashMap<>(); // карта, где для каждой точки хранится предыдущая пройденная
         Set<Coordinates> visited = new HashSet<>();
 
         queue.add(start);
@@ -17,9 +19,9 @@ public class PathFinder {
                 Coordinates current = queue.poll();
 
                 if (map.get(current) instanceof Herbivore) {     //если нашли травоядного -> восстанавливаем путь
-                    return reconstructPath(cameFrom, start, current);
+                    return recoverPath(cameFrom, start, current);
                 }
-                for (Coordinates neighbor : getNeighbors(current)) {
+                for (Coordinates neighbor : getNeighborCells(current)) {
                     if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Plant) && !(map.get(neighbor) instanceof Predator)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
@@ -34,9 +36,9 @@ public class PathFinder {
                 Coordinates current = queue.poll();
 
                 if (map.get(current) instanceof Grass) {       //если нашли траву -> восстанавливаем путь
-                    return reconstructPath(cameFrom, start, current);
+                    return recoverPath(cameFrom, start, current);
                 }
-                for (Coordinates neighbor : getNeighbors(current)) {
+                for (Coordinates neighbor : getNeighborCells(current)) {
                     if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Herbivore) && !(map.get(neighbor) instanceof Tree) && !(map.get(neighbor) instanceof Predator)){
                         queue.add(neighbor);
                         visited.add(neighbor);
@@ -50,26 +52,26 @@ public class PathFinder {
     }
 
 
-    private List<Coordinates> getNeighbors(Coordinates coordinates) {
+    private List<Coordinates> getNeighborCells(Coordinates coordinates) {
         List<Coordinates> neighbors = new ArrayList<>();
-        int line = coordinates.getRow();
+        int row = coordinates.getRow();
         int column = coordinates.getColumn();
 
-        if (line > 0) neighbors.add(new Coordinates(line - 1, column));        // вверх
-        if (line < 9) neighbors.add(new Coordinates(line + 1, column));        // вниз
-        if (column > 0) neighbors.add(new Coordinates(line, column - 1));   // влево
-        if (column < 19) neighbors.add(new Coordinates(line, column + 1));  // вправо
+        if (row > 0) neighbors.add(new Coordinates(row - 1, column));        // вверх
+        if (row < (WORLD_ROWS - 1)) neighbors.add(new Coordinates(row + 1, column));        // вниз
+        if (column > 0) neighbors.add(new Coordinates(row, column - 1));   // влево
+        if (column < WORLD_COLUMNS) neighbors.add(new Coordinates(row, column + 1));  // вправо
 
         return neighbors;
     }
 
-    private List<Coordinates> reconstructPath(Map<Coordinates, Coordinates> cameFrom, Coordinates start, Coordinates goal) {  //восстановить путь
-        List<Coordinates> path = new ArrayList<>();
+    private List<Coordinates> recoverPath(Map<Coordinates, Coordinates> cameFrom, Coordinates start, Coordinates goal) {  //восстановить путь
+        List<Coordinates> path = new ArrayList<>();      //путь от goal до start
         Coordinates current = goal;
 
-        while (!current.equals(start)) {
+        while (!current.equals(start)) {                //пока не пришли в точку goal
             path.add(current);
-            current = cameFrom.get(current);
+            current = cameFrom.get(current);            //берем точку из которой пришли
         }
 
         Collections.reverse(path);

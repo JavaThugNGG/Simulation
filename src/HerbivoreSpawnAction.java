@@ -4,10 +4,10 @@ import java.util.Random;
 
 public class HerbivoreSpawnAction extends CreatureSpawnAction {
 
-    public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, int worldRows, int worldColumns, List<MoveListener> listeners) {
+    public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners) {
         Random random = new Random();
-        int row = random.nextInt(worldRows);
-        int column = random.nextInt(worldColumns);
+        int row = random.nextInt(WORLD_ROWS);
+        int column = random.nextInt(WORLD_COLUMNS);
         String herbivoreFigure = "\uD83D\uDC30";
 
         Coordinates spawnCoordinates = new Coordinates(row, column);

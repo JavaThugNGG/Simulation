@@ -4,10 +4,10 @@ import java.util.Random;
 
 public class TreeSpawnAction extends PlantSpawnAction{
 
-    public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, int worldRows, int worldColumns) {
+    public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities) {
         Random random = new Random();
-        int row = random.nextInt(worldRows);
-        int column = random.nextInt(worldColumns);
+        int row = random.nextInt(WORLD_ROWS);
+        int column = random.nextInt(WORLD_COLUMNS);
         String treeFigure = "\uD83C\uDF33";
 
         Coordinates spawnCoordinates = new Coordinates(row,column);

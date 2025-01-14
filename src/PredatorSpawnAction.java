@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class PredatorSpawnAction extends CreatureSpawnAction{
 
-    public void perform(Map<Coordinates, Entity> map, List<MoveListener> listeners, List<Entity> generatedEntities) {
+    public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners) {
         Random random = new Random();
         int row = random.nextInt(10);
         int column = random.nextInt(20);

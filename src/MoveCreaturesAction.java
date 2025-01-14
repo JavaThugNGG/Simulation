@@ -6,27 +6,16 @@ public class MoveCreaturesAction {
 
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, PathFinder pathFinder) {
 
-        for (Entity entity1 : generatedEntities) {
-
-            if (entity1 instanceof Creature) {
-                Creature entity = (Creature) entity1;
-                if (entity instanceof Herbivore) {
-                    List<Coordinates> path = pathFinder.findPathToVictim(map, entity);
-
-                    if (path.isEmpty()) {     //если пути нет, то двигаться не надо
-                        return;
-                    }
-
-                    Coordinates newCoordinates = path.removeFirst();
-                    entity.makeMove(newCoordinates);
-                }
-            } else if (entity1 instanceof Creature) {
-                Creature entity = (Creature) entity1;
-                if (entity instanceof Predator) {
-                    List<Coordinates> path = pathFinder.findPathToVictim(map, entity);
+        for (Entity entity : generatedEntities) {
+            if (entity instanceof Creature) {
+                Creature entity1 = (Creature) entity;
+                if (entity1 instanceof Predator) {
+                    List<Coordinates> path = pathFinder.findPathToVictim(map, entity1);
+                    System.out.println(entity1);
+                    System.out.println("Предатор" + path);
 
                     if (path.isEmpty()) {     //если пути нет, то двигаться не надо
-                        return;
+                        continue;
                     }
 
                     for (int i = 0; i < 2; i++) {
@@ -34,7 +23,20 @@ public class MoveCreaturesAction {
                             break; // прекращаем цикл, если путь пуст
                         }
                         Coordinates newCoordinates = path.removeFirst();
-                        entity.makeMove(newCoordinates);
+                        entity1.makeMove(newCoordinates);
+                    }
+                } else if (entity1 instanceof Creature) {
+                    if (entity instanceof Herbivore) {
+                        List<Coordinates> path = pathFinder.findPathToVictim(map, entity1);
+                        System.out.println(entity1);
+                        System.out.println("Хербивор" + path);
+
+                        if (path.isEmpty()) {     //если пути нет, то двигаться не надо
+                            continue;
+                        }
+
+                        Coordinates newCoordinates = path.removeFirst();
+                        entity1.makeMove(newCoordinates);
                     }
                 }
             }

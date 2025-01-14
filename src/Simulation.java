@@ -5,28 +5,17 @@ import java.util.*;
 public class Simulation {
     private Map<Coordinates, Entity> map = new HashMap<>();
     private List<MoveListener> listeners = new ArrayList<>();    //список слушателей (паттерн observer)
-    private List<Entity> generatedEntities= new ArrayList<>();
     private PathFinder pathFinder = new PathFinder();
-
-    private boolean isEnd;
+    private List<Entity> generatedEntities= new ArrayList<>();
 
     private List<CreatureSpawnAction> creatureInitActions = new ArrayList<>();
     private List<PlantSpawnAction> plantInitActions = new ArrayList<>();;
-
     private List<MoveCreaturesAction> turnActions = new ArrayList<>();;
 
+    private boolean isEnd;
 
 
     public void initializeSimulation() {
-        MapController mapController = new MapController(map, 10, 20, generatedEntities, listeners);
-        Renderer renderer = new Renderer();
-        listeners.add(mapController);
-        PathFinder pathFinder = new PathFinder();
-        runSimulation(renderer);
-    }
-
-    private void runSimulation(Renderer renderer) {
-
         creatureInitActions.add(new HerbivoreSpawnAction());
         creatureInitActions.add(new PredatorSpawnAction());
 
@@ -40,32 +29,39 @@ public class Simulation {
         }
 
         for (CreatureSpawnAction action : creatureInitActions) {
-            action.perform(map, listeners, generatedEntities);
+            action.perform(map, generatedEntities, listeners);
         }
 
+        MapController mapController = new MapController(map, 10, 20, generatedEntities, listeners);
+        listeners.add(mapController);
+        Renderer renderer = new Renderer();
+        runSimulation(renderer);
+    }
 
-
-
-
+    private void runSimulation(Renderer renderer) {
         do {
-            isEnd = true;
-            for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
-                if (entry.getValue() instanceof Herbivore) {
-                    isEnd = false;
-                    break;
-                }
-            }
-
-
             renderer.printMap(map);
-
-            for (MoveCreaturesAction action : turnActions) {
-                action.perform(map, generatedEntities, pathFinder);
-            }
-
-
+            isEnd = isHerbivoresAlive();
+            moveCreations();
 
         } while (!isEnd);
+    }
+
+    private void moveCreations() {
+        for (MoveCreaturesAction action : turnActions) {
+            action.perform(map, generatedEntities, pathFinder);
+        }
+    }
+
+    private boolean isHerbivoresAlive() {
+        boolean isEnd = true;
+        for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
+            if (entry.getValue() instanceof Herbivore) {
+                isEnd = false;
+                break;
+            }
+        }
+        return isEnd;
     }
 }
 

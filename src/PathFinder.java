@@ -20,7 +20,7 @@ public class PathFinder {
                     return reconstructPath(cameFrom, start, current);
                 }
                 for (Coordinates neighbor : getNeighbors(current)) {
-                    if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Plant) &&!(map.get(neighbor) instanceof Predator)) {
+                    if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Plant) && !(map.get(neighbor) instanceof Predator)) {
                         queue.add(neighbor);
                         visited.add(neighbor);
                         cameFrom.put(neighbor, current);
@@ -37,7 +37,7 @@ public class PathFinder {
                     return reconstructPath(cameFrom, start, current);
                 }
                 for (Coordinates neighbor : getNeighbors(current)) {
-                    if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Herbivore) && !(map.get(neighbor) instanceof Tree)){
+                    if (!visited.contains(neighbor)  && !(map.get(neighbor) instanceof Herbivore) && !(map.get(neighbor) instanceof Tree) && !(map.get(neighbor) instanceof Predator)){
                         queue.add(neighbor);
                         visited.add(neighbor);
                         cameFrom.put(neighbor, current);

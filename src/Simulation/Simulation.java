@@ -33,20 +33,9 @@ public class Simulation {
             return;
         }
 
-
-        while (isPaused) {
-            try {
-                wait(); // ждем, пока флаг паузы не будет снят
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                return;
-            }
-        }
-
         worldPrinter.print(map);
         moveCreations();
         isEnd = !isHerbivoresAlive();
-
     }
 
 
@@ -86,16 +75,6 @@ public class Simulation {
         }
         return isAlive;
     }
-
-    public synchronized void pauseSimulation() {
-        isPaused = true;
-    }
-
-    public synchronized void resumeSimulation() {
-        isPaused = false;
-        notifyAll(); // Уведомляем все ожидающие потоки
-    }
-
 
     public static int getWORLD_ROWS() {
         return WORLD_ROWS;

@@ -4,7 +4,7 @@ public abstract class Entity {
 
     public Entity(Coordinates coordinates, String figure) {
         this.coordinates = coordinates;
-        this.figure = figure;;
+        this.figure = figure;
     }
 
     public Coordinates getCoordinates() {

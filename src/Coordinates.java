@@ -1,6 +1,5 @@
 import java.util.Objects;
 
-
 public class Coordinates implements Comparable<Coordinates> {
     private int row;
     private int column;
@@ -23,7 +22,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     @Override
-    public boolean equals(Object o) {    //т к у нас в мапе ключ - объект
+    public boolean equals(Object o) {    //для HashMap (потому что ключ - объект)
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Coordinates that = (Coordinates) o;
@@ -36,7 +35,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     @Override
-    public int compareTo(Coordinates other) {
+    public int compareTo(Coordinates other) {                    //для HashMap -> TreeMap (потому что ключи у нас объекты)
         if (this.row != other.row) {
             return Integer.compare(this.row, other.row);
         }

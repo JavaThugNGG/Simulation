@@ -1,6 +1,5 @@
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 
 public abstract class CreatureSpawnAction{
     protected final int WORLD_ROWS = Simulation.getWORLD_ROWS();

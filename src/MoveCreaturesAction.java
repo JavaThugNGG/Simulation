@@ -4,31 +4,39 @@ import java.util.Map;
 public class MoveCreaturesAction {
 
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, PathFinder pathFinder) {
-
         for (Entity entity : generatedEntities) {
-
-            if (entity instanceof Creature) {                                              //если сущность это существо
-                Creature creature = (Creature) entity;                                     //сделали downcasting к классу Creature (потому что метод makeMove у Creature только есть)
-                List<Coordinates> path = pathFinder.findPathToVictim(map, creature);       //рассчитали путь
-                if (path.isEmpty()) {                                                      //если пути нет, то двигаться не надо
-                    continue;
-                }
-
-                if (creature instanceof Predator) {
-
-                    for (int i = 0; i < 2; i++) {                                             //хищник делает 2 шага за кадр
-                        if (path.isEmpty()) {
-                            break; // прекращаем цикл, если второго шага не требуется уже
-                        }
-                        Coordinates newCoordinates = path.removeFirst();                      //из списка убрали координату на которую только что сходили (обновили)
-                        creature.makeMove(newCoordinates);
-                    }
-                } else if (creature instanceof Herbivore) {
-                    Coordinates newCoordinates = path.removeFirst();
-                    creature.makeMove(newCoordinates);
-                }
+            if (entity instanceof Creature) {
+                Creature creature = (Creature) entity;                   // downcasting до класса Creature (метод движения там)
+                handleCreatureMove(map, pathFinder, creature);
             }
         }
     }
-}
 
+    private void handleCreatureMove(Map<Coordinates, Entity> map, PathFinder pathFinder, Creature creature) {
+        List<Coordinates> path = pathFinder.findPathToVictim(map, creature);           // рассчитать путь к цели
+        if (path.isEmpty()) {
+            return;                                                                    // если пути нет, существо не движется
+        }
+
+        if (creature instanceof Predator) {                                             //кол-во шагов зависит от типа существа
+            movePredator(creature, path);
+        } else if (creature instanceof Herbivore) {
+            moveHerbivore(creature, path);
+        }
+    }
+
+    private void movePredator(Creature predator, List<Coordinates> path) {
+        for (int i = 0; i < 2; i++) {                                                       //хищник делает 2 хода за кадр
+            if (path.isEmpty()) {
+                break;
+            }
+            Coordinates newCoordinates = path.removeFirst();                               // обновляем путь (удаляем координату, куда уже сходили)
+            predator.makeMove(newCoordinates);
+        }
+    }
+
+    private void moveHerbivore(Creature herbivore, List<Coordinates> path) {
+        Coordinates newCoordinates = path.removeFirst();                                   // обновляем путь (удаляем координату, куда уже сходили)
+        herbivore.makeMove(newCoordinates);
+    }
+}

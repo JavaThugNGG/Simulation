@@ -39,7 +39,7 @@ public class Simulation {
         turnActions.add(new MoveCreaturesAction());
 
         for (PlantSpawnAction action : plantInitActions) {
-            action.perform(map, generatedEntities);
+            action.perform(map, generatedEntities, WORLD_ROWS, WORLD_COLUMNS);
         }
 
         for (CreatureSpawnAction action : creatureInitActions) {

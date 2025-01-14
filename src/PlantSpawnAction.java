@@ -3,5 +3,5 @@ import java.util.Map;
 
 public abstract class PlantSpawnAction{
 
-    public abstract void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities);
+    public abstract void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, int worldRows, int worldColumns);
 }

@@ -4,16 +4,16 @@ import java.util.Random;
 
 public class PredatorSpawnAction extends CreatureSpawnAction{
 
-    public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners) {
+    public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, int worldRows, int worldColumns, List<MoveListener> listeners) {
         Random random = new Random();
-        int row = random.nextInt(10);
-        int column = random.nextInt(20);
+        int row = random.nextInt(worldRows);
+        int column = random.nextInt(worldColumns);
         String predatorFigure = "\uD83D\uDC3A";
 
 
         Coordinates spawnCoordinates = new Coordinates(row, column);
-        Predator predator = new Predator(spawnCoordinates, predatorFigure, listeners);
-        map.put(spawnCoordinates, predator);
-        generatedEntities.add(predator);
+        Predator predator = new Predator(spawnCoordinates, predatorFigure, listeners);    //создали объект с рандомными координатами
+        map.put(spawnCoordinates, predator);                                              //положили его в мапу
+        generatedEntities.add(predator);                                                  //положили его в список существ
     }
 }

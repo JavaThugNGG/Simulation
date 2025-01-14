@@ -43,7 +43,7 @@ public class Simulation {
         }
 
         for (CreatureSpawnAction action : creatureInitActions) {
-            action.perform(map, generatedEntities, listeners);
+            action.perform(map, generatedEntities, WORLD_ROWS, WORLD_COLUMNS, listeners);
         }
 
         MapController mapController = new MapController(map, WORLD_ROWS, WORLD_COLUMNS, generatedEntities, listeners);

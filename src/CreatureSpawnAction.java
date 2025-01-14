@@ -4,5 +4,5 @@ import java.util.Random;
 
 public abstract class CreatureSpawnAction{
 
-    public abstract void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners);
+    public abstract void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, int worldRows, int worldColumns, List<MoveListener> listeners);
 }

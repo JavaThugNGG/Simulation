@@ -23,5 +23,6 @@ public class WorldPrinter {
             System.out.println();
         }
         System.out.println();
+        System.out.println();        //Чтобы при нажатии двойки на паузе эта двойка не наезжала на мапу, которая сейчас принтится
     }
 }

@@ -10,7 +10,6 @@ public class PredatorSpawnAction extends CreatureSpawnAction{
         int column = random.nextInt(WORLD_COLUMNS);
         String predatorFigure = "\uD83D\uDC3A";
 
-
         Coordinates spawnCoordinates = new Coordinates(row, column);
         Predator predator = new Predator(spawnCoordinates, predatorFigure, listeners);    //создали объект с рандомными координатами
         map.put(spawnCoordinates, predator);                                              //положили его в мапу

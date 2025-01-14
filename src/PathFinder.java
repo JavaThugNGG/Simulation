@@ -57,10 +57,10 @@ public class PathFinder {
         int row = coordinates.getRow();
         int column = coordinates.getColumn();
 
-        if (row > 0) neighbors.add(new Coordinates(row - 1, column));        // вверх
+        if (row > 0) neighbors.add(new Coordinates(row - 1, column));                       // вверх
         if (row < (WORLD_ROWS - 1)) neighbors.add(new Coordinates(row + 1, column));        // вниз
-        if (column > 0) neighbors.add(new Coordinates(row, column - 1));   // влево
-        if (column < WORLD_COLUMNS) neighbors.add(new Coordinates(row, column + 1));  // вправо
+        if (column > 0) neighbors.add(new Coordinates(row, column - 1));                  // влево
+        if (column < WORLD_COLUMNS) neighbors.add(new Coordinates(row, column + 1));      // вправо
 
         return neighbors;
     }

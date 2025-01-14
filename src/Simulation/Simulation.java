@@ -19,25 +19,38 @@ public class Simulation {
     private List<MoveListener> listeners = new ArrayList<>();    //список классов, которые следят за изменением координат существ (чтобы обновить мапу)
 
     private List<CreatureSpawnAction> creatureInitActions = new ArrayList<>();
-    private List<PlantSpawnAction> plantInitActions = new ArrayList<>();;
-    private List<MoveCreaturesAction> turnActions = new ArrayList<>();;
+    private List<PlantSpawnAction> plantInitActions = new ArrayList<>();
+    private List<MoveCreaturesAction> turnActions = new ArrayList<>();
 
+    private volatile boolean isPaused = false;
+    private volatile boolean isInitialized = false;
+    private volatile boolean isEnd = false;
 
-    public void runSimulation() {
-        boolean isEnd;
+    public synchronized void runSimulation() {
 
-        initializeSimulation();
-        worldPrinter.print(map);
-        do {
-            moveCreations();
-            isEnd = isHerbivoresAlive();
+        if (isEnd) {
             worldPrinter.print(map);
+            return;
+        }
 
-        } while (!isEnd);
+
+        while (isPaused) {
+            try {
+                wait(); // ждем, пока флаг паузы не будет снят
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                return;
+            }
+        }
+
+        worldPrinter.print(map);
+        moveCreations();
+        isEnd = !isHerbivoresAlive();
+
     }
 
 
-    private void initializeSimulation() {
+    public synchronized void initializeSimulation() {
         creatureInitActions.add(new HerbivoreSpawnAction());
         creatureInitActions.add(new PredatorSpawnAction());
         plantInitActions.add(new GrassSpawnAction());
@@ -54,6 +67,7 @@ public class Simulation {
 
         MapController mapController = new MapController(map, generatedEntities);
         listeners.add(mapController);                                                     //класс mapController слушает перемещения класса Simulation.Simulation.Entities.Entity и обновляет мапу
+        isInitialized = true;
     }
 
     private void moveCreations() {
@@ -63,15 +77,25 @@ public class Simulation {
     }
 
     private boolean isHerbivoresAlive() {
-        boolean isAlive = true;
+        boolean isAlive = false;
         for (Map.Entry<Coordinates, Entity> entry : map.entrySet()) {
             if (entry.getValue() instanceof Herbivore) {
-                isAlive = false;
+                isAlive = true;
                 break;
             }
         }
         return isAlive;
     }
+
+    public synchronized void pauseSimulation() {
+        isPaused = true;
+    }
+
+    public synchronized void resumeSimulation() {
+        isPaused = false;
+        notifyAll(); // Уведомляем все ожидающие потоки
+    }
+
 
     public static int getWORLD_ROWS() {
         return WORLD_ROWS;
@@ -79,6 +103,18 @@ public class Simulation {
 
     public static int getWORLD_COLUMNS() {
         return WORLD_COLUMNS;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
+    }
+
+    public boolean isInitialized() {
+        return isInitialized;
+    }
+
+    public boolean isEnd() {
+        return isEnd;
     }
 }
 

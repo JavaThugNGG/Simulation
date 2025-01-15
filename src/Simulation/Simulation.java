@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 
-
-
-
 public class Simulation {
     private static final int WORLD_ROWS = 10;
     private static final int WORLD_COLUMNS = 20;
@@ -26,8 +23,6 @@ public class Simulation {
     private final List<PlantSpawnAction> plantInitActions = new ArrayList<>();
     private final List<MoveCreaturesAction> turnActions = new ArrayList<>();
 
-    private volatile boolean isPaused = false;
-    private volatile boolean isRunning = false;
     private volatile boolean isEnd = false;
 
     private final Object pauseLock = new Object();
@@ -53,57 +48,11 @@ public class Simulation {
     }
 
     public void startSimulation() {
-        isRunning = true;
+        if (!isEnd) {
 
-        Thread simulationThread = new Thread(() -> {
-            while (!isEnd) {
-                    synchronized (pauseLock) {
-                        if (isPaused && !isEnd) {
-                            try {
-                                pauseLock.wait();
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                                return;
-                            }
-                        }
-
-                    worldPrinter.print(map);
-                    moveCreations();
-                    isEnd = isHerbivoresDead();
-                }
-
-                try {
-                    Thread.sleep(1000); // Задержка для визуализации
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                    return;
-                }
-            }
-            isRunning = false;
-        });
-
-        simulationThread.start();
-    }
-
-    public void pauseSimulation() {
-        synchronized (pauseLock) {
-            isPaused = true;
-        }
-    }
-
-    public void resumeSimulation() {
-        synchronized (pauseLock) {
-            isPaused = false;
-            pauseLock.notifyAll();
-        }
-    }
-
-    public void endSimulation()
-    {
-        synchronized (pauseLock) {
-            isPaused = false;
-            pauseLock.notifyAll();
-            isEnd = true;
+            worldPrinter.print(map);
+            moveCreations();
+            isEnd = isHerbivoresDead();
         }
     }
 

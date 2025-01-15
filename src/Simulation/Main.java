@@ -1,57 +1,116 @@
 package Simulation;
 
 import java.util.Scanner;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    private static final Object pauseLock = new Object();
+    private static final Object printLock = new Object();
+    private static boolean isEnd = false;
+    private static boolean isPaused = false;
+    private static boolean isSimulationStarted = false;
+
+    public static void main(String[] args) {
         Simulation simulation = new Simulation();
 
-        Thread initializationThread = new Thread(simulation::initializeSimulation);     // Поток для инициализации симуляции
-        Thread runThread = new Thread(simulation::startSimulation);
-
-        initializationThread.start();                                                   // Запустили этот поток
+        Thread initializationThread = new Thread(simulation::initializeSimulation);
+        initializationThread.start();
 
         try {
-            initializationThread.join();            // Подождали пока инициализация завершится
+            initializationThread.join();
         } catch (InterruptedException e) {
+            System.err.println("Ошибка при инициализации!");
             e.printStackTrace();
-            System.out.println("Ошибка при инициализации!");
+            return;
         }
 
+        Thread simulationThread = new Thread(() -> {
+            while (!isEnd) {
+                synchronized (pauseLock) {
+                    try {
+                        while (isPaused && !isEnd) {
+                            pauseLock.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                        return;
+                    }
+                }
+                if (!isEnd) {
+                    simulation.startSimulation();
+                }
+
+                try {
+                    Thread.sleep(1000); // Задержка для визуализации
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+        });
+
+        runMenu(simulationThread);
+    }
+
+    private static void runMenu(Thread simulationThread) {
         Scanner scanner = new Scanner(System.in);
-        boolean exit = false;
 
-
-        while (!exit) {
-            System.out.println("Выберите действие:");
-            System.out.println("1 - Запуск симуляции");
-            System.out.println("2 - Пауза");
-            System.out.println("3 - Продолжить");
-            System.out.println("4 - Выход");
+        while (!isEnd) {
+            synchronized (printLock) {
+                System.out.println("Выберите действие:");
+                System.out.println("1 - Запуск симуляции");
+                System.out.println("2 - Пауза");
+                System.out.println("3 - Продолжить");
+                System.out.println("4 - Выход");
+            }
 
             int choice = scanner.nextInt();
 
-
-
-            switch (choice) {
-                case 1 -> runThread.start();
-                case 2 -> simulation.pauseSimulation();
-                case 3 -> simulation.resumeSimulation();
-                case 4 -> {
-                    simulation.endSimulation();
-                    try {
-                            runThread.join();  // Ждем завершения потока симуляции, если он еще работает
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                        System.out.println("Ошибка при завершении потока, который отвечает за цикл симуляции.");
+            synchronized (printLock) {
+                switch (choice) {
+                    case 1 -> {
+                        if (!isSimulationStarted) {
+                            simulationThread.start();
+                            isSimulationStarted = true;
+                        } else {
+                            System.out.println("Симуляция уже запущена.");
+                        }
                     }
-                    exit = true;
+                    case 2 -> {
+                        if (isSimulationStarted) {
+                            isPaused = true;
+                            System.out.println("Симуляция приостановлена.");
+                        } else {
+                            System.out.println("Симуляция не была запущена.");
+                        }
+                    }
+                    case 3 -> {
+                        if (isPaused) {
+                            synchronized (pauseLock) {
+                                isPaused = false;
+                                pauseLock.notifyAll();
+                                System.out.println("Симуляция продолжена.");
+                            }
+                        } else {
+                            System.out.println("Симуляция уже запущена.");
+                        }
+                    }
+                    case 4 -> {
+                        isEnd = true;
+                        synchronized (pauseLock) {
+                            pauseLock.notifyAll();
+                        }
+                        System.out.println("Завершение программы...");
+                        try {
+                            simulationThread.join();
+                        } catch (InterruptedException e) {
+                            System.err.println("Ошибка при завершении потока симуляции.");
+                            e.printStackTrace();
+                        }
+                    }
+                    default -> System.out.println("Неверный выбор. Повторите ввод.");
                 }
-                default -> System.out.println("Неверный выбор. Повторите ввод.");
             }
         }
         scanner.close();
     }
 }
-

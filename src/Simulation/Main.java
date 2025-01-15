@@ -5,7 +5,17 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Simulation simulation = new Simulation();
-        simulation.initializeSimulation();
+
+        // Создаем поток для инициализации симуляции
+        Thread initializationThread = new Thread(() -> simulation.initializeSimulation());
+        initializationThread.start();
+
+        // Ожидаем завершения инициализации
+        try {
+            initializationThread.join();  // Главный поток ожидает завершения инициализации
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         Scanner scanner = new Scanner(System.in);
         boolean exit = false;

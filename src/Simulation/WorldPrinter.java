@@ -9,6 +9,7 @@ public class WorldPrinter {
     private final int WORLD_COLUMNS = Simulation.getWORLD_COLUMNS();
 
     public void print(Map<Coordinates, Entity> inputMap) {
+        System.out.println();                                             //чтобы выбор с клавиатуры на наезжал перед мапой в консоли
         for (int i = 0; i < WORLD_ROWS; i++) {
             for (int j = 0; j < WORLD_COLUMNS; j++) {
                 Coordinates coordinate = new Coordinates(i, j);   // потому что мапа кушает класс Simulation.Simulation.Coordinates
@@ -23,6 +24,5 @@ public class WorldPrinter {
             System.out.println();
         }
         System.out.println();
-        System.out.println();        //Чтобы при нажатии двойки на паузе эта двойка не наезжала на мапу, которая сейчас принтится
     }
 }

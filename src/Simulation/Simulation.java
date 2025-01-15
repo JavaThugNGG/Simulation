@@ -54,24 +54,23 @@ public class Simulation {
 
     public void startSimulation() {
         isRunning = true;
-        isEnd = false;
 
         Thread simulationThread = new Thread(() -> {
             while (!isEnd) {
-                synchronized (pauseLock) {
-                    while (isPaused) {
-                        try {
-                            pauseLock.wait();
-                        } catch (InterruptedException e) {
-                            Thread.currentThread().interrupt();
-                            return;
+                    synchronized (pauseLock) {
+                        if (isPaused && !isEnd) {
+                            try {
+                                pauseLock.wait();
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                                return;
+                            }
                         }
-                    }
-                }
 
-                worldPrinter.print(map);
-                moveCreations();
-                isEnd = isHerbivoresDead();
+                    worldPrinter.print(map);
+                    moveCreations();
+                    isEnd = isHerbivoresDead();
+                }
 
                 try {
                     Thread.sleep(1000); // Задержка для визуализации
@@ -99,6 +98,15 @@ public class Simulation {
         }
     }
 
+    public void endSimulation()
+    {
+        synchronized (pauseLock) {
+            isPaused = false;
+            pauseLock.notifyAll();
+            isEnd = true;
+        }
+    }
+
     private void moveCreations() {
         for (MoveCreaturesAction action : turnActions) {
             action.perform(map, generatedEntities, pathFinder);
@@ -121,6 +129,7 @@ public class Simulation {
     public static int getWORLD_COLUMNS() {
         return WORLD_COLUMNS;
     }
+
 }
 
 

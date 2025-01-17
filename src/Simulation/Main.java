@@ -11,6 +11,7 @@ public class Main {
     private static boolean isPaused = false;
     private static boolean isEnd = false;                               //получаем флаг из класса Simulation
 
+
     public static void main(String[] args) {
         Simulation simulation = new Simulation();
 
@@ -53,7 +54,7 @@ public class Main {
             }
             simulation.printLast();                      //вывели мапу в самом конце когда волк сожрал зайца
             isExit = true;
-            System.out.println("Симуляция закончена! Введите цифру от 1 до 4 ддя выхода");
+            System.out.println("Симуляция закончена! Введите цифру от 1 до 3 ддя выхода");
         });
 
         runMenu(simulationThread);
@@ -68,7 +69,6 @@ public class Main {
                 System.out.println("1 - Запуск симуляции");
                 System.out.println("2 - Пауза");
                 System.out.println("3 - Продолжить");
-                System.out.println("4 - Выход");
             }
 
 
@@ -76,10 +76,10 @@ public class Main {
             while (true) {
                 if (scanner.hasNextInt()) {
                     choice = scanner.nextInt();
-                    if (choice >= 1 && choice <= 4) {
+                    if (choice >= 1 && choice <= 3) {
                         break;
                     } else {
-                        System.out.println("Неверный выбор. Введите число от 1 до 4.");
+                        System.out.println("Неверный выбор. Введите число от 1 до 3.");
                     }
                 } else {
                     System.out.println("Ошибка! Введите корректное число.");
@@ -121,22 +121,7 @@ public class Main {
                             System.out.println("\nОшибка! Вы уже вышли из паузы!\n");
                         }
                     }
-                    case 4 -> {
-                        isExit = true;
-                        synchronized (pauseLock) {
-                            pauseLock.notifyAll();
-                        }
-                        System.out.println("Завершение программы...");
-                        try {
-                            simulationThread.join();
-                        } catch (InterruptedException e) {
-                            System.err.println("Ошибка при завершении потока симуляции.");
-                            e.printStackTrace();
-                        }
-                    }
-                    default -> {
-                        System.out.println("Неверный выбор. Повторите ввод.");
-                    }
+                    default -> System.out.println("Неверный выбор. Повторите ввод.");
                 }
             }
         scanner.close();

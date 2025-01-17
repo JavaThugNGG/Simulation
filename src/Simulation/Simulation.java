@@ -87,6 +87,10 @@ public class Simulation {
         return isEnd;
     }
 
+    public void off() {
+        isEnd = true;
+    }
+
 }
 
 

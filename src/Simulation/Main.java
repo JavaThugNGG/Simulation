@@ -9,7 +9,7 @@ public class Main {
     private static boolean isSimulationStarted = false;
     private static boolean isExit = false;
     private static boolean isPaused = false;
-    private static boolean isEnd = false;                               //получаем флаг из класса Simulation
+    private static boolean isSimulationEnd = false;                               //получаем флаг из класса Simulation
 
 
     public static void main(String[] args) {
@@ -84,7 +84,7 @@ public class Main {
 
     private static Thread createSimulationThread(Simulation simulation) {
         return new Thread(() -> {
-            while (!isEnd) {                                         //цикл организован здесь а не в классе Simulation, флаг isEnd подтягивается оттуда
+            while (!isSimulationEnd) {                                         //цикл организован здесь а не в классе Simulation, флаг isEnd подтягивается оттуда
                 synchronized (pauseLock) {
                     try {
                         while (isPaused) {
@@ -96,7 +96,7 @@ public class Main {
                     }
                 }
 
-                if (!isEnd) {
+                if (!isSimulationEnd) {
                     simulation.startSimulation();                  //одна отрисовка мапы (один ход)
                 }
 
@@ -107,7 +107,7 @@ public class Main {
                     Thread.currentThread().interrupt();
                     return;
                 }
-                isEnd = simulation.isEnd();              //обновили флаг (условие выхода из цикла)
+                isSimulationEnd = simulation.isEnd();              //обновили флаг (условие выхода из цикла)
             }
             simulation.printLast();                      //вывели мапу в самом конце когда волк сожрал зайца
             isExit = true;

@@ -23,12 +23,9 @@ public class Simulation {
     private final List<PlantSpawnAction> plantInitActions = new ArrayList<>();
     private final List<MoveCreaturesAction> turnActions = new ArrayList<>();
 
-    private volatile boolean isEnd = false;
-
-    private final Object pauseLock = new Object();
+    private volatile boolean isEnd = false;              //для паузы
 
     public void initializeSimulation() {
-        // Инициализация объектов
         creatureInitActions.add(new HerbivoreSpawnAction());
         creatureInitActions.add(new PredatorSpawnAction());
         plantInitActions.add(new GrassSpawnAction());
@@ -49,10 +46,9 @@ public class Simulation {
 
     public void startSimulation() {
         if (!isEnd) {
-
             worldPrinter.print(map);
             moveCreations();
-            isEnd = isHerbivoresDead();
+            isEnd = isAllHerbivoresDead();
         }
     }
 
@@ -62,13 +58,21 @@ public class Simulation {
         }
     }
 
-    private boolean isHerbivoresDead() {
+    private boolean isAllHerbivoresDead() {
         for (Entity entity : map.values()) {
             if (entity instanceof Herbivore) {
                 return false;
             }
         }
         return true;
+    }
+
+    public void printLast() {                              //для вывода в консоль последнего состояния мапы после окончания цикла симуляции
+        worldPrinter.print(map);
+    }
+
+    public boolean isEnd() {                              //для получения флага завершения цикла из класса Main
+        return isEnd;
     }
 
     public static int getWORLD_ROWS() {
@@ -78,19 +82,6 @@ public class Simulation {
     public static int getWORLD_COLUMNS() {
         return WORLD_COLUMNS;
     }
-
-    public void printLast() {
-        worldPrinter.print(map);
-    }
-
-    public boolean isEnd() {
-        return isEnd;
-    }
-
-    public void off() {
-        isEnd = true;
-    }
-
 }
 
 

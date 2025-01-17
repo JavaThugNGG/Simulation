@@ -3,7 +3,7 @@ package Simulation.Actions;
 import Simulation.Entities.Entity;
 import Simulation.Coordinates;
 import Simulation.MoveListener;
-import Simulation.Predator;
+import Simulation.Entities.Predator;
 
 import java.util.List;
 import java.util.Map;

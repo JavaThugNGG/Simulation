@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public class Simulation {
     private static final int WORLD_ROWS = 10;
     private static final int WORLD_COLUMNS = 20;

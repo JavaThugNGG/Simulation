@@ -5,7 +5,7 @@ import Simulation.Entities.Entity;
 import Simulation.Entities.Herbivore;
 import Simulation.Coordinates;
 import Simulation.PathFinder;
-import Simulation.Predator;
+import Simulation.Entities.Predator;
 
 import java.util.List;
 import java.util.Map;
@@ -15,7 +15,7 @@ public class MoveCreaturesAction {
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, PathFinder pathFinder) {
         for (Entity entity : generatedEntities) {
             if (entity instanceof Creature) {
-                Creature creature = (Creature) entity;                   // downcasting до класса Simulation.Simulation.Entities.Creature (метод движения там)
+                Creature creature = (Creature) entity;                   // downcasting до класса Creature (метод движения там)
                 handleCreatureMove(map, pathFinder, creature);
             }
         }

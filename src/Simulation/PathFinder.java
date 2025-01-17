@@ -12,8 +12,6 @@ import java.util.Set;
 import java.util.HashSet;
 import java.util.ArrayList;
 
-
-
 public class PathFinder {
     final int WORLD_ROWS = Simulation.getWORLD_ROWS();
     final int WORLD_COLUMNS = Simulation.getWORLD_COLUMNS();

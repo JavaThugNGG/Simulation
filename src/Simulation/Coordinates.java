@@ -3,8 +3,8 @@ package Simulation;
 import java.util.Objects;
 
 public class Coordinates implements Comparable<Coordinates> {
-    private int row;
-    private int column;
+    private final int row;
+    private final int column;
 
     public Coordinates(int line, int column) {
         this.row = line;

@@ -1,6 +1,7 @@
-package Simulation;
+package Simulation.Entities;
 
-import Simulation.Entities.Creature;
+import Simulation.Coordinates;
+import Simulation.MoveListener;
 
 import java.util.List;
 

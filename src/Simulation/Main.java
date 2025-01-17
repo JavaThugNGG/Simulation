@@ -26,65 +26,61 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (!isExit) {
-            synchronized (printLock) {                          //println бывает конфликтует с выводом мапы (текст назжает на мапу)
-                System.out.println("Выберите действие:");
-                System.out.println("1 - Запуск симуляции");
-                System.out.println("2 - Пауза");
-                System.out.println("3 - Продолжить");
+            synchronized (printLock) {  // Убедимся, что вывод не конфликтует
+                printMenuOptions();      // Вызов нового метода для вывода опций
             }
 
             int choice = getValidChoice(scanner);
 
-            if (isExit) {           //после отработки симуляции цикл падает на 2 итерацию и ждет ввода (не завершает программу), это нужно чтобы завершить ее
+            if (isExit) {                                                //после отработки симуляции цикл падает на 2 итерацию и ждет ввода (не завершает программу), это нужно чтобы завершить ее
                 break;
             }
 
-                switch (choice) {
-                    case 1 -> {
-                        if (!isSimulationStarted) {
-                            synchronized (printLock) {
-                            simulationThread.start();              //здесь выводится мапа которая конфликтует в выводом меню сверху
-                            }
-                            isSimulationStarted = true;
-                        } else {
-                            System.out.println("\nОшибка! Симуляция уже запущена!\n");
-                        }
-                    }
-                    case 2 -> {
+            switch (choice) {
+                case 1 -> {
+                    if (!isSimulationStarted) {
                         synchronized (printLock) {
-                            if (isSimulationStarted) {
-
-                                if (!isPaused) {
-                                    isPaused = true;
-                                    System.out.println("Симуляция приостановлена.\n");
-                                } else {
-                                    System.out.println("\nВы уже находитель в паузе!\n");
-                                }
-
-                            } else {
-                                System.out.println("\nОшибка! Сначала запустите симуляцию!\n");
-                            }
+                        simulationThread.start();              //здесь выводится мапа которая конфликтует в выводом меню сверху
                         }
+                        isSimulationStarted = true;
+                    } else {
+                        System.out.println("\nОшибка! Симуляция уже запущена!\n");
                     }
-                    case 3 -> {
-                        if (isPaused) {
-                            synchronized (printLock) {
-                                synchronized (pauseLock) {
-                                isPaused = false;
-                                pauseLock.notify();
-                                System.out.println("Симуляция продолжена.");
-                                }
-                            }
-                        } else {
-                            System.out.println("\nОшибка! Вы уже вышли из паузы!\n");
-                        }
-                    }
-                    default -> System.out.println("Неверный выбор. Повторите ввод.");
                 }
-            }
-        scanner.close();
-        }
+                case 2 -> {
+                    synchronized (printLock) {
+                        if (isSimulationStarted) {
 
+                            if (!isPaused) {
+                                isPaused = true;
+                                System.out.println("Симуляция приостановлена.\n");
+                            } else {
+                                System.out.println("\nВы уже находитель в паузе!\n");
+                            }
+
+                        } else {
+                            System.out.println("\nОшибка! Сначала запустите симуляцию!\n");
+                        }
+                    }
+                }
+                case 3 -> {
+                    if (isPaused) {
+                        synchronized (printLock) {
+                            synchronized (pauseLock) {
+                            isPaused = false;
+                            pauseLock.notify();
+                            System.out.println("Симуляция продолжена.");
+                            }
+                        }
+                    } else {
+                        System.out.println("\nОшибка! Вы уже вышли из паузы!\n");
+                    }
+                }
+                default -> System.out.println("Неверный выбор. Повторите ввод.");
+            }
+        }
+        scanner.close();
+    }
 
     private static Thread createSimulationThread(Simulation simulation) {
         return new Thread(() -> {
@@ -134,5 +130,12 @@ public class Main {
                 scanner.next(); // Очищаем некорректный ввод
             }
         }
+    }
+
+    private static void printMenuOptions() {
+            System.out.println("Выберите действие:");
+            System.out.println("1 - Запуск симуляции");
+            System.out.println("2 - Пауза");
+            System.out.println("3 - Продолжить");
     }
 }

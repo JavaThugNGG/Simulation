@@ -79,6 +79,14 @@ public class Simulation {
         return WORLD_COLUMNS;
     }
 
+    public void printLast() {
+        worldPrinter.print(map);
+    }
+
+    public boolean isEnd() {
+        return isEnd;
+    }
+
 }
 
 

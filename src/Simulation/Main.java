@@ -9,7 +9,9 @@ public class Main {
     private static boolean isPaused = false;
     private static boolean isSimulationStarted = false;
 
-    public static void main(String[] args) {
+    private static boolean isExit = false;
+
+    public static void main(String[] args) throws InterruptedException {
         Simulation simulation = new Simulation();
 
         Thread initializationThread = new Thread(simulation::initializeSimulation);
@@ -25,6 +27,7 @@ public class Main {
 
         Thread simulationThread = new Thread(() -> {
             while (!isEnd) {
+                System.out.println("изенд сработал первый");
                 synchronized (pauseLock) {
                     try {
                         while (isPaused && !isEnd) {
@@ -45,16 +48,22 @@ public class Main {
                     Thread.currentThread().interrupt();
                     return;
                 }
+                isEnd = simulation.isEnd();
             }
+            System.out.println("Вышли из первого");
+            simulation.printLast();
+            isExit = true;
+            System.out.println("Симуляция закончена!");
+            System.out.println("4 - Выход");
         });
 
         runMenu(simulationThread);
     }
 
-    private static void runMenu(Thread simulationThread) {
+    private static void runMenu(Thread simulationThread) throws InterruptedException {
         Scanner scanner = new Scanner(System.in);
 
-        while (!isEnd) {
+        while (!isExit) {
             synchronized (printLock) {
                 System.out.println("Выберите действие:");
                 System.out.println("1 - Запуск симуляции");
@@ -77,6 +86,7 @@ public class Main {
                     }
                     case 2 -> {
                         if (isSimulationStarted) {
+                            System.out.println("Зашло");
                             isPaused = true;
                             System.out.println("Симуляция приостановлена.");
                         } else {
@@ -95,7 +105,7 @@ public class Main {
                         }
                     }
                     case 4 -> {
-                        isEnd = true;
+                        isExit = true;
                         synchronized (pauseLock) {
                             pauseLock.notifyAll();
                         }

@@ -15,16 +15,7 @@ public class Main {
     public static void main(String[] args) {
         Simulation simulation = new Simulation();
 
-        Thread initializationThread = new Thread(simulation::initializeSimulation);
-        initializationThread.start();
-
-        try {                                                          //ждем завершения конца инициализации карты
-            initializationThread.join();
-        } catch (InterruptedException e) {
-            System.err.println("Ошибка при инициализации карты!");
-            e.printStackTrace();
-            return;
-        }
+        simulation.initializeSimulation();
 
         Thread simulationThread = createSimulationThread(simulation);
 

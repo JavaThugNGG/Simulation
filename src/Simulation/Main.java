@@ -3,34 +3,33 @@ package Simulation;
 import java.util.Scanner;
 
 public class Main {
-    private static final Object pauseLock = new Object();
+    private static final Object pauseLock = new Object();                   //статики из-за статичного main (они в нем используются)
     private static final Object printLock = new Object();
-    private static boolean isEnd = false;
-    private static boolean isPaused = false;
+
     private static boolean isSimulationStarted = false;
-
     private static boolean isExit = false;
+    private static boolean isPaused = false;
+    private static boolean isEnd = false;                               //получаем флаг из класса Simulation
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Simulation simulation = new Simulation();
 
         Thread initializationThread = new Thread(simulation::initializeSimulation);
         initializationThread.start();
 
-        try {
+        try {                                                          //ждем завершения конца инициализации карты
             initializationThread.join();
         } catch (InterruptedException e) {
-            System.err.println("Ошибка при инициализации!");
+            System.err.println("Ошибка при инициализации карты!");
             e.printStackTrace();
             return;
         }
 
         Thread simulationThread = new Thread(() -> {
-            while (!isEnd) {
-                System.out.println("изенд сработал первый");
+            while (!isEnd) {                                         //цикл организован здесь а не в классе Simulation, флаг isEnd подтягивается оттуда
                 synchronized (pauseLock) {
                     try {
-                        while (isPaused && !isEnd) {
+                        while (isPaused) {
                             pauseLock.wait();
                         }
                     } catch (InterruptedException e) {
@@ -38,33 +37,33 @@ public class Main {
                         return;
                     }
                 }
+
                 if (!isEnd) {
-                    simulation.startSimulation();
+                    simulation.startSimulation();                  //одна отрисовка мапы (один ход)
                 }
 
                 try {
-                    Thread.sleep(1000); // Задержка для визуализации
+                    Thread.sleep(1200); // Задержка для визуализации
                 } catch (InterruptedException e) {
+                    System.out.println("Поток simulationThread был прерван во время сна!");
                     Thread.currentThread().interrupt();
                     return;
                 }
-                isEnd = simulation.isEnd();
+                isEnd = simulation.isEnd();              //обновили флаг (условие выхода из цикла)
             }
-            System.out.println("Вышли из первого");
-            simulation.printLast();
+            simulation.printLast();                      //вывели мапу в самом конце когда волк сожрал зайца
             isExit = true;
-            System.out.println("Симуляция закончена!");
-            System.out.println("4 - Выход");
+            System.out.println("Симуляция закончена! Введите цифру от 1 до 4 ддя выхода");
         });
 
         runMenu(simulationThread);
     }
 
-    private static void runMenu(Thread simulationThread) throws InterruptedException {
+    private static void runMenu(Thread simulationThread) {
         Scanner scanner = new Scanner(System.in);
 
         while (!isExit) {
-            synchronized (printLock) {
+            synchronized (printLock) {                          //println бывает конфликтует с выводом мапы (текст назжает на мапу)
                 System.out.println("Выберите действие:");
                 System.out.println("1 - Запуск симуляции");
                 System.out.println("2 - Пауза");
@@ -72,36 +71,54 @@ public class Main {
                 System.out.println("4 - Выход");
             }
 
-            int choice = scanner.nextInt();
 
-            synchronized (printLock) {
+            int choice;                                     //защита от дурака
+            while (true) {
+                if (scanner.hasNextInt()) {
+                    choice = scanner.nextInt();
+                    if (choice >= 1 && choice <= 4) {
+                        break;
+                    } else {
+                        System.out.println("Неверный выбор. Введите число от 1 до 4.");
+                    }
+                } else {
+                    System.out.println("Ошибка! Введите корректное число.");
+                    scanner.next();
+                }
+            }
+
+            if (isExit) {           //после отработки симуляции цикл падает на 2 итерацию и ждет ввода (не завершает программу), это нужно чтобы завершить ее
+                break;
+            }
+
                 switch (choice) {
                     case 1 -> {
                         if (!isSimulationStarted) {
-                            simulationThread.start();
+                            synchronized (printLock) {
+                            simulationThread.start();              //здесь выводится мапа которая конфликтует в выводом меню сверху
+                            }
                             isSimulationStarted = true;
                         } else {
-                            System.out.println("Симуляция уже запущена.");
+                            System.out.println("\nОшибка! Симуляция уже запущена!\n");
                         }
                     }
                     case 2 -> {
                         if (isSimulationStarted) {
-                            System.out.println("Зашло");
                             isPaused = true;
                             System.out.println("Симуляция приостановлена.");
                         } else {
-                            System.out.println("Симуляция не была запущена.");
+                            System.out.println("\nОшибка! Сначала запустите симуляцию!\n");
                         }
                     }
                     case 3 -> {
                         if (isPaused) {
                             synchronized (pauseLock) {
                                 isPaused = false;
-                                pauseLock.notifyAll();
+                                pauseLock.notify();
                                 System.out.println("Симуляция продолжена.");
                             }
                         } else {
-                            System.out.println("Симуляция уже запущена.");
+                            System.out.println("\nОшибка! Вы уже вышли из паузы!\n");
                         }
                     }
                     case 4 -> {
@@ -117,10 +134,11 @@ public class Main {
                             e.printStackTrace();
                         }
                     }
-                    default -> System.out.println("Неверный выбор. Повторите ввод.");
+                    default -> {
+                        System.out.println("Неверный выбор. Повторите ввод.");
+                    }
                 }
             }
-        }
         scanner.close();
+        }
     }
-}

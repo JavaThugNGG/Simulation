@@ -33,21 +33,7 @@ public class Main {
                 System.out.println("3 - Продолжить");
             }
 
-
-            int choice;                                     //защита от дурака
-            while (true) {
-                if (scanner.hasNextInt()) {
-                    choice = scanner.nextInt();
-                    if (choice >= 1 && choice <= 3) {
-                        break;
-                    } else {
-                        System.out.println("Неверный выбор. Введите число от 1 до 3.");
-                    }
-                } else {
-                    System.out.println("Ошибка! Введите корректное число.");
-                    scanner.next();
-                }
-            }
+            int choice = getValidChoice(scanner);
 
             if (isExit) {           //после отработки симуляции цикл падает на 2 итерацию и ждет ввода (не завершает программу), это нужно чтобы завершить ее
                 break;
@@ -65,13 +51,19 @@ public class Main {
                         }
                     }
                     case 2 -> {
-                        if (isSimulationStarted) {
-                            isPaused = true;
-                            synchronized (printLock) {
-                                System.out.println("Симуляция приостановлена.");
+                        synchronized (printLock) {
+                            if (isSimulationStarted) {
+
+                                if (!isPaused) {
+                                    isPaused = true;
+                                    System.out.println("Симуляция приостановлена.\n");
+                                } else {
+                                    System.out.println("\nВы уже находитель в паузе!\n");
+                                }
+
+                            } else {
+                                System.out.println("\nОшибка! Сначала запустите симуляцию!\n");
                             }
-                        } else {
-                            System.out.println("\nОшибка! Сначала запустите симуляцию!\n");
                         }
                     }
                     case 3 -> {
@@ -92,6 +84,7 @@ public class Main {
             }
         scanner.close();
         }
+
 
     private static Thread createSimulationThread(Simulation simulation) {
         return new Thread(() -> {
@@ -124,5 +117,22 @@ public class Main {
             isExit = true;
             System.out.println("Симуляция закончена! Введите цифру от 1 до 3 для выхода");
         });
+    }
+
+    private static int getValidChoice(Scanner scanner) {
+        int choice;
+        while (true) {
+            if (scanner.hasNextInt()) {
+                choice = scanner.nextInt();
+                if (choice >= 1 && choice <= 3) {
+                    return choice;
+                } else {
+                    System.out.println("Неверный выбор. Введите число от 1 до 3.");
+                }
+            } else {
+                System.out.println("Ошибка! Введите корректное число.");
+                scanner.next(); // Очищаем некорректный ввод
+            }
+        }
     }
 }

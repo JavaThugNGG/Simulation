@@ -16,9 +16,12 @@ public abstract class Creature extends Entity {
     public void makeMove(Coordinates newCoordinates) {
         Coordinates oldCoordinates = this.coordinates;
         this.coordinates = newCoordinates;
+        notifyMoveListeners(oldCoordinates, newCoordinates);
+    }
 
+    private void notifyMoveListeners(Coordinates oldCoordinates, Coordinates newCoordinates) {
         for (MoveListener listener : listeners) {
-            listener.onMove(this, oldCoordinates, newCoordinates);  //уведомляем всех слушателей о перемещении
+            listener.onMove(this, oldCoordinates, newCoordinates);
         }
     }
 }

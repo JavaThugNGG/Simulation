@@ -8,13 +8,14 @@ import Simulation.Entities.Predator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import Simulation.Simulation;
 
 public class PredatorSpawnAction extends CreatureSpawnAction {
 
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners) {
         Random random = new Random();
-        int row = random.nextInt(WORLD_ROWS);
-        int column = random.nextInt(WORLD_COLUMNS);
+        int row = random.nextInt(Simulation.WORLD_ROWS);
+        int column = random.nextInt(Simulation.WORLD_COLUMNS);
         String predatorFigure = "\uD83D\uDC3A";
 
         Coordinates spawnCoordinates = new Coordinates(row, column);

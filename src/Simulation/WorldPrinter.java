@@ -5,13 +5,11 @@ import Simulation.Entities.Entity;
 import java.util.Map;
 
 public class WorldPrinter {
-    private final int WORLD_ROWS = Simulation.getWORLD_ROWS();
-    private final int WORLD_COLUMNS = Simulation.getWORLD_COLUMNS();
 
     public void print(Map<Coordinates, Entity> inputMap) {
         System.out.println();                                             //чтобы выбор с клавиатуры на наезжал перед мапой в консоли
-        for (int i = 0; i < WORLD_ROWS; i++) {
-            for (int j = 0; j < WORLD_COLUMNS; j++) {
+        for (int i = 0; i < Simulation.WORLD_ROWS; i++) {
+            for (int j = 0; j < Simulation.WORLD_COLUMNS; j++) {
                 Coordinates coordinate = new Coordinates(i, j);   // потому что мапа кушает класс Coordinates
 
                 if (inputMap.containsKey(coordinate)) {           // проверяем наличие координаты в карте

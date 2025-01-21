@@ -16,13 +16,13 @@ public class MoveCreaturesAction {
         for (Entity entity : generatedEntities) {
             if (entity instanceof Creature) {
                 Creature creature = (Creature) entity;                   // downcasting до класса Creature (метод движения там)
-                handleCreatureMove(map, pathFinder, creature);
+                handleCreatureMove(pathFinder, creature);
             }
         }
     }
 
-    private void handleCreatureMove(Map<Coordinates, Entity> map, PathFinder pathFinder, Creature creature) {
-        List<Coordinates> path = pathFinder.findPathToVictim(map, creature);           // рассчитать путь к цели
+    private void handleCreatureMove(PathFinder pathFinder, Creature creature) {
+        List<Coordinates> path = pathFinder.findPathToVictim(creature);           // рассчитать путь к цели
         if (path.isEmpty()) {
             return;                                                                    // если пути нет, существо не движется
         }

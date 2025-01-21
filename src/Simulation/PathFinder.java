@@ -13,22 +13,26 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 public class PathFinder {
-    final int WORLD_ROWS = Simulation.getWORLD_ROWS();
-    final int WORLD_COLUMNS = Simulation.getWORLD_COLUMNS();
+    Map<Coordinates, Entity> map;
 
-    public List<Coordinates> findPathToVictim(Map<Coordinates, Entity> map, Creature creature) {
+    public PathFinder(Map<Coordinates, Entity> map) {
+        this.map = map;
+    }
+
+    public List<Coordinates> findPathToVictim(Creature creature) {
         Coordinates start = creature.getCoordinates();
 
         if (creature instanceof Predator) {
-            return findPathToGoal(map, start, Herbivore.class);  // Хищник ищет травоядных
-        } else if (creature instanceof Herbivore) {
-            return findPathToGoal(map, start, Grass.class);      // Травоядное ищет траву
+            return findPathToGoal(start, Herbivore.class);
+        }
+        if (creature instanceof Herbivore) {
+            return findPathToGoal(start, Grass.class);
         }
 
-        return Collections.emptyList(); // если не хищник и не травоядное
+        return Collections.emptyList();
     }
 
-    private List<Coordinates> findPathToGoal(Map<Coordinates, Entity> map, Coordinates start, Class<?> goalClass) {
+    private List<Coordinates> findPathToGoal(Coordinates start, Class<?> goalClass) {
         Queue<Coordinates> queue = new LinkedList<>();
         Map<Coordinates, Coordinates> cameFrom = new HashMap<>();
         Set<Coordinates> visited = new HashSet<>();
@@ -38,12 +42,12 @@ public class PathFinder {
         while (!queue.isEmpty()) {
             Coordinates current = queue.poll();
 
-            if (goalClass.isInstance(map.get(current))) {  // проверяем, является ли текущая точка целью
+            if (isGoalAtCoordinates(current, goalClass)) {
                 return recoverPath(cameFrom, start, current);
             }
 
             for (Coordinates neighbor : getNeighborCells(current)) {
-                if (!visited.contains(neighbor) && isValidMove(map, neighbor, goalClass)) {
+                if (!visited.contains(neighbor) && isValidMove(neighbor, goalClass)) {
                     queue.add(neighbor);
                     visited.add(neighbor);
                     cameFrom.put(neighbor, current);
@@ -51,10 +55,10 @@ public class PathFinder {
             }
         }
 
-        return Collections.emptyList(); // если путь не найден
+        return Collections.emptyList();
     }
 
-    private boolean isValidMove(Map<Coordinates, Entity> map, Coordinates neighbor, Class<?> goalClass) {
+    private boolean isValidMove(Coordinates neighbor, Class<?> goalClass) {
         Entity entity = map.get(neighbor);
 
         // Здесь проверка на тип сущности
@@ -67,14 +71,18 @@ public class PathFinder {
         return true;
     }
 
+    private boolean isGoalAtCoordinates(Coordinates current, Class<?> goalClass) {
+        Entity currentEntity = map.get(current);  // Получаем сущность на текущей координате
+        return goalClass.isInstance(currentEntity);  // Проверяем, является ли сущность целью
+    }
 
     private List<Coordinates> getNeighborCells(Coordinates coordinates) {
         List<Coordinates> neighbors = new ArrayList<>();
         int row = coordinates.getRow();
         int column = coordinates.getColumn();
 
-        int maxRowIndex = WORLD_ROWS - 1;
-        int maxColumnIndex = WORLD_COLUMNS - 1;
+        int maxRowIndex = Simulation.WORLD_ROWS - 1;
+        int maxColumnIndex = Simulation.WORLD_COLUMNS - 1;
 
         if (row > 0) {
             neighbors.add(new Coordinates(row - 1, column));

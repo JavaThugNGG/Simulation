@@ -4,6 +4,7 @@ import Simulation.Coordinates;
 import Simulation.Entities.Entity;
 import Simulation.Entities.Herbivore;
 import Simulation.MoveListener;
+import Simulation.Simulation;
 
 
 import java.util.List;
@@ -14,8 +15,8 @@ public class HerbivoreSpawnAction extends CreatureSpawnAction {
 
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners) {
         Random random = new Random();
-        int row = random.nextInt(WORLD_ROWS);
-        int column = random.nextInt(WORLD_COLUMNS);
+        int row = random.nextInt(Simulation.WORLD_ROWS);
+        int column = random.nextInt(Simulation.WORLD_COLUMNS);
         String herbivoreFigure = "\uD83D\uDC30";
 
         Coordinates spawnCoordinates = new Coordinates(row, column);

@@ -9,11 +9,11 @@ import java.util.List;
 import java.util.Map;
 
 public class Simulation {
-    private static final int WORLD_ROWS = 10;
-    private static final int WORLD_COLUMNS = 20;
+    public static final int WORLD_ROWS = 10;
+    public static final int WORLD_COLUMNS = 20;
 
     private final Map<Coordinates, Entity> map = new HashMap<>();
-    private final PathFinder pathFinder = new PathFinder();
+    private final PathFinder pathFinder = new PathFinder(map);
     private final List<Entity> generatedEntities = new ArrayList<>();
     private final WorldPrinter worldPrinter = new WorldPrinter();
     private final List<MoveListener> listeners = new ArrayList<>();
@@ -72,14 +72,6 @@ public class Simulation {
 
     public boolean isEnd() {                              //для получения флага завершения цикла из класса Main
         return isEnd;
-    }
-
-    public static int getWORLD_ROWS() {
-        return WORLD_ROWS;
-    }
-
-    public static int getWORLD_COLUMNS() {
-        return WORLD_COLUMNS;
     }
 }
 

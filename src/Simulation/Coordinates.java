@@ -25,8 +25,12 @@ public class Coordinates implements Comparable<Coordinates> {
 
     @Override
     public boolean equals(Object o) {    //для HashMap (потому что ключ - объект)
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
         Coordinates that = (Coordinates) o;
         return row == that.row && column == that.column;
     }

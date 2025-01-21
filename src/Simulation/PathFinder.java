@@ -69,11 +69,26 @@ public class PathFinder {
         int row = coordinates.getRow();
         int column = coordinates.getColumn();
 
-        if (row > 0) neighbors.add(new Coordinates(row - 1, column));                       // вверх
-        if (row < (WORLD_ROWS - 1)) neighbors.add(new Coordinates(row + 1, column));        // вниз
-        if (column > 0) neighbors.add(new Coordinates(row, column - 1));                  // влево
-        if (column < WORLD_COLUMNS) neighbors.add(new Coordinates(row, column + 1));      // вправо
+        int maxRowIndex = WORLD_ROWS - 1;
+        int maxColumnIndex = WORLD_COLUMNS - 1;
 
+        int upRow = row - 1;
+        int downRow = row + 1;
+        int leftColumn = column - 1;
+        int rightColumn = column + 1;
+
+        if (row > 0) {
+            neighbors.add(new Coordinates(upRow, column));
+        }
+        if (row < maxRowIndex) {
+            neighbors.add(new Coordinates(downRow, column));
+        }
+        if (column > 0) {
+            neighbors.add(new Coordinates(row, leftColumn));
+        }
+        if (column < maxColumnIndex) {
+            neighbors.add(new Coordinates(row, rightColumn));
+        }
         return neighbors;
     }
 

@@ -14,25 +14,27 @@ import java.util.ArrayList;
 
 public class PathFinder {
     Map<Coordinates, Entity> map;
+    Coordinates start;
+
 
     public PathFinder(Map<Coordinates, Entity> map) {
         this.map = map;
     }
 
     public List<Coordinates> findPathToVictim(Creature creature) {
-        Coordinates start = creature.getCoordinates();
+        start = creature.getCoordinates();
 
         if (creature instanceof Predator) {
-            return findPathToGoal(start, Herbivore.class);
+            return findPathToGoal(Herbivore.class);
         }
         if (creature instanceof Herbivore) {
-            return findPathToGoal(start, Grass.class);
+            return findPathToGoal(Grass.class);
         }
 
         return Collections.emptyList();
     }
 
-    private List<Coordinates> findPathToGoal(Coordinates start, Class<?> goalClass) {
+    private List<Coordinates> findPathToGoal(Class<?> goalClass) {
         Queue<Coordinates> queue = new LinkedList<>();
         Map<Coordinates, Coordinates> cameFrom = new HashMap<>();
         Set<Coordinates> visited = new HashSet<>();

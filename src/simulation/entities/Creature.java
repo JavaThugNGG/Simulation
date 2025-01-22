@@ -1,7 +1,7 @@
-package Simulation.Entities;
+package simulation.entities;
 
-import Simulation.MoveListener;
-import Simulation.Coordinates;
+import simulation.MoveListener;
+import simulation.Coordinates;
 
 import java.util.List;
 

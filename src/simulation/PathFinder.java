@@ -1,6 +1,6 @@
-package Simulation;
+package simulation;
 
-import Simulation.Entities.*;
+import simulation.entities.*;
 
 import java.util.Collections;
 import java.util.List;
@@ -74,8 +74,8 @@ public class PathFinder {
     }
 
     private boolean isGoalAtCoordinates(Coordinates current, Class<?> goalClass) {
-        Entity currentEntity = map.get(current);  // Получаем сущность на текущей координате
-        return goalClass.isInstance(currentEntity);  // Проверяем, является ли сущность целью
+        Entity currentEntity = map.get(current);
+        return goalClass.isInstance(currentEntity);  //стоит ли на этой позиции искомая нами сущность
     }
 
     private List<Coordinates> getNeighborCells(Coordinates coordinates) {

@@ -1,7 +1,7 @@
-package Simulation;
+package simulation;
 
-import Simulation.Actions.*;
-import Simulation.Entities.*;
+import simulation.actions.*;
+import simulation.entities.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class Simulation {
     private final List<PlantSpawnAction> plantInitActions = new ArrayList<>();
     private final List<MoveCreaturesAction> turnActions = new ArrayList<>();
 
-    private volatile boolean isEnd = false;              //для паузы
+    private volatile boolean isEnd = false;
 
     public void initializeSimulation() {
         creatureInitActions.add(new HerbivoreSpawnAction());
@@ -53,7 +53,7 @@ public class Simulation {
 
     private void moveCreations() {
         for (MoveCreaturesAction action : turnActions) {
-            action.perform(map, generatedEntities, pathFinder);
+            action.perform(generatedEntities, pathFinder);
         }
     }
 
@@ -66,14 +66,11 @@ public class Simulation {
         return true;
     }
 
-    public void printLast() {                              //для вывода в консоль последнего состояния мапы после окончания цикла симуляции
+    public void printLast() {
         worldPrinter.print(map);
     }
 
-    public boolean isEnd() {                              //для получения флага завершения цикла из класса Main
+    public boolean isEnd() {
         return isEnd;
     }
 }
-
-
-

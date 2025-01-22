@@ -1,4 +1,4 @@
-package Simulation;
+package simulation;
 
 import java.util.Objects;
 
@@ -24,7 +24,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     @Override
-    public boolean equals(Object o) {    //для HashMap (потому что ключ - объект)
+    public boolean equals(Object o) {
         if (this == o) {
             return true;
         }
@@ -41,7 +41,7 @@ public class Coordinates implements Comparable<Coordinates> {
     }
 
     @Override
-    public int compareTo(Coordinates other) {                    //для HashMap -> TreeMap (потому что ключи у нас объекты)
+    public int compareTo(Coordinates other) {
         if (this.row != other.row) {
             return Integer.compare(this.row, other.row);
         }

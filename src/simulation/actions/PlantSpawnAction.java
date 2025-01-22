@@ -1,8 +1,7 @@
-package Simulation.Actions;
+package simulation.actions;
 
-import Simulation.Entities.Entity;
-import Simulation.Simulation;
-import Simulation.Coordinates;
+import simulation.entities.Entity;
+import simulation.Coordinates;
 
 import java.util.List;
 import java.util.Map;

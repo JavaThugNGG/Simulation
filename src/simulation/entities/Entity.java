@@ -1,6 +1,6 @@
-package Simulation.Entities;
+package simulation.entities;
 
-import Simulation.Coordinates;
+import simulation.Coordinates;
 
 public abstract class Entity {
     protected Coordinates coordinates;

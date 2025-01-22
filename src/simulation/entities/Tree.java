@@ -1,6 +1,6 @@
-package Simulation.Entities;
+package simulation.entities;
 
-import Simulation.Coordinates;
+import simulation.Coordinates;
 
 public class Tree extends Plant {
 

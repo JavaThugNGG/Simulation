@@ -11,15 +11,15 @@ import java.util.Random;
 import Simulation.Simulation;
 
 public class PredatorSpawnAction extends CreatureSpawnAction {
+    private static final String PREDATOR_EMOJI = "\uD83D\uDC3A";
 
     public void perform(Map<Coordinates, Entity> map, List<Entity> generatedEntities, List<MoveListener> listeners) {
         Random random = new Random();
         int row = random.nextInt(Simulation.WORLD_ROWS);
         int column = random.nextInt(Simulation.WORLD_COLUMNS);
-        String predatorFigure = "\uD83D\uDC3A";
 
         Coordinates spawnCoordinates = new Coordinates(row, column);
-        Predator predator = new Predator(spawnCoordinates, predatorFigure, listeners);    //создали объект с рандомными координатами
+        Predator predator = new Predator(spawnCoordinates, PREDATOR_EMOJI, listeners);    //создали объект с рандомными координатами
         map.put(spawnCoordinates, predator);                                              //положили его в мапу
         generatedEntities.add(predator);                                                  //положили его в список существ
     }

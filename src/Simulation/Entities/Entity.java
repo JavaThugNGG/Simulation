@@ -4,7 +4,7 @@ import Simulation.Coordinates;
 
 public abstract class Entity {
     protected Coordinates coordinates;
-    protected String figure;
+    protected final String figure;
 
     public Entity(Coordinates coordinates, String figure) {
         this.coordinates = coordinates;

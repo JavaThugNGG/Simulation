@@ -6,7 +6,7 @@ import Simulation.Coordinates;
 import java.util.List;
 
 public abstract class Creature extends Entity {
-    private List<MoveListener> listeners;
+    private final List<MoveListener> listeners;
 
     public Creature(Coordinates coordinates, String figure, List<MoveListener> listeners) {
         super(coordinates, figure);

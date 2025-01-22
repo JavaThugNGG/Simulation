@@ -13,8 +13,8 @@ import java.util.HashSet;
 import java.util.ArrayList;
 
 public class PathFinder {
-    Map<Coordinates, Entity> map;
-    Coordinates start;
+    private final Map<Coordinates, Entity> map;
+    private Coordinates start;
 
 
     public PathFinder(Map<Coordinates, Entity> map) {

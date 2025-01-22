@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class MapController implements MoveListener {
-    private Map<Coordinates, Entity> map;
+    private final Map<Coordinates, Entity> map;
 
     public MapController(Map<Coordinates, Entity> map, List<Entity> generatedEntities) {
         this.map = map;

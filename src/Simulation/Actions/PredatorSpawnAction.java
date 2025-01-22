@@ -17,7 +17,6 @@ public class PredatorSpawnAction extends CreatureSpawnAction {
         Random random = new Random();
         int row = random.nextInt(Simulation.WORLD_ROWS);
         int column = random.nextInt(Simulation.WORLD_COLUMNS);
-
         Coordinates spawnCoordinates = new Coordinates(row, column);
         Predator predator = new Predator(spawnCoordinates, PREDATOR_EMOJI, listeners);    //создали объект с рандомными координатами
         map.put(spawnCoordinates, predator);                                              //положили его в мапу

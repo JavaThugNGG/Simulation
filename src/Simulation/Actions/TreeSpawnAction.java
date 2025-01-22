@@ -16,9 +16,9 @@ public class TreeSpawnAction extends PlantSpawnAction {
         Random random = new Random();
         int row = random.nextInt(Simulation.WORLD_ROWS);
         int column = random.nextInt(Simulation.WORLD_COLUMNS);
-
         Coordinates spawnCoordinates = new Coordinates(row,column);
         Tree tree = new Tree(spawnCoordinates, TREE_EMOJI);         // создали объект дерева с рандомными координатами
+
         map.put(spawnCoordinates, tree);                            //положили в мапу
         generatedEntities.add(tree);                                //положили в список существ
     }

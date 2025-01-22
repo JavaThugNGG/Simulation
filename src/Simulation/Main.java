@@ -14,11 +14,8 @@ public class Main {
 
     public static void main(String[] args) {
         Simulation simulation = new Simulation();
-
         simulation.initializeSimulation();
-
         Thread simulationThread = createSimulationThread(simulation);
-
         runMenu(simulationThread);
     }
 

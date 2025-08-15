@@ -2,7 +2,8 @@
 
 "Simulation" — это пошаговая симуляция 2D-мира, населенного травоядными и хищниками. 
 
-![image](https://github.com/user-attachments/assets/f4670c5a-3e8b-47c6-838c-7d5b1aea0835)
+<img width="368" height="329" alt="image" src="https://github.com/user-attachments/assets/fa30300d-db87-4063-b98d-9c7f28ee7737" />
+
 
 
 ## Структура симуляции
